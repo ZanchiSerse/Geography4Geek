@@ -1,0 +1,125 @@
+﻿@model IEnumerable<Geography4Geek_1.Models.QuizAttempt>
+@{
+    ViewData["Title"] = "Risultati Quiz Studenti";
+    Layout = "_DashboardLayout";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Risultati Quiz Studenti</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/Dashboard">Dashboard</a></li>
+        <li class="breadcrumb-item active">Risultati Quiz</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Storico Completo Quiz
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="quizResultsTable" width="100%">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Studente</th>
+                            <th>Paese</th>
+                            <th>Difficoltà</th>
+                            <th>Data Completamento</th>
+                            <th>Punteggio</th>
+                            <th>Percentuale</th>
+                            <th>Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var attempt in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="@Url.Action("StudentQuizHistory", new { userId = attempt.UserId })">
+                                        <i class="fas fa-user me-1"></i> @attempt.User.UserName
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="country-name">@attempt.CountryName</span>
+                                </td>
+                                <td>
+                                    @{
+                                        var difficultyClass = attempt.Difficulty.ToLower() switch
+                                        {
+                                            "easy" => "bg-success",
+                                            "medium" => "bg-warning",
+                                            "hard" => "bg-danger",
+                                            _ => "bg-secondary"
+                                        };
+                                    }
+                                    <span class="badge @difficultyClass">@attempt.Difficulty</span>
+                                </td>
+                                <td>
+                                    <span title="@attempt.CompletedAt">
+                                        @attempt.CompletedAt?.ToString("dd/MM/yyyy HH:mm")
+                                    </span>
+                                </td>
+                                <td>@attempt.Score / @attempt.TotalQuestions</td>
+                                <td>
+                                    @{
+                                        var percentClass = attempt.ScorePercentage switch
+                                        {
+                                            >= 90 => "text-success",
+                                            >= 70 => "text-primary",
+                                            >= 50 => "text-warning",
+                                            _ => "text-danger"
+                                        };
+                                    }
+                                    <span class="@percentClass fw-bold">@attempt.ScorePercentage.ToString("0.0")%</span>
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("AttemptDetails", new { id = attempt.Id })"
+                                       class="btn btn-sm btn-primary">
+                                        <i class="fas fa-eye me-1"></i> Dettagli
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const datatablesSimple = document.getElementById('quizResultsTable');
+            if (datatablesSimple) {
+                new simpleDatatables.DataTable(datatablesSimple, {
+                    paging: true,
+                    perPage: 15,
+                    searching: true,
+                    sortable: true,
+                    labels: {
+                        placeholder: "Cerca...",
+                        perPage: "{select} risultati per pagina",
+                        noRows: "Nessun risultato trovato",
+                        info: "Visualizzazione {start} - {end} di {rows} risultati"
+                    }
+                });
+            }
+        });
+    </script>
+}
+
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+    <style>
+        .country-name {
+            font-weight: 500;
+        }
+
+        .badge {
+            font-size: 0.8rem;
+            padding: 0.4em 0.7em;
+        }
+    </style>
+}

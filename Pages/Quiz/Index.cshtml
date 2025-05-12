@@ -1,0 +1,1009 @@
+﻿@page
+@model Geography4Geek_1.Pages.Quiz.IndexModel
+@{
+    ViewData["Title"] = "Quiz Geografia";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Container per avvisi e messaggi -->
+            <div id="quiz-alert-container"></div>
+
+            @if (Model.IsQuizAvailable)
+            {
+                <div class="quiz-container">
+                    <!-- Loader per il caricamento -->
+                    <div id="quiz-loading" class="text-center py-5">
+                        <div class="spinner-border text-primary mb-4" style="width: 3rem; height: 3rem;"></div>
+                        <h4 class="mb-3">Caricamento quiz...</h4>
+                        <p class="text-muted">Stiamo preparando il tuo quiz su @Model.CountryName</p>
+                    </div>
+
+                    <!-- Contenitore principale del quiz -->
+                    <div id="quiz-content" style="display: none;">
+                        <h2 id="quizTitle" class="quiz-title text-center mb-4"></h2>
+
+                        <!-- Progresso -->
+                        <div class="progress mb-4" style="height: 10px;">
+                            <div class="quiz-progress-bar progress-bar bg-primary" role="progressbar"
+                                 style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+                        <p class="progress-text text-center mb-4">Domanda 1 di 5</p>
+
+                        <!-- Contenitore della domanda -->
+                        <div id="questionContainer" class="question-container mb-4"></div>
+                    </div>
+
+                    <!-- Contenitore per i risultati -->
+                    <div id="quiz-results" style="display: none;"></div>
+
+                    <!-- Messaggio quando non c'è un quiz disponibile -->
+                    <div id="no-quiz-available" class="text-center py-5" style="display: none;">
+                        <i class="fas fa-exclamation-circle fa-3x text-warning mb-3"></i>
+                        <h4 class="mb-3">Quiz non disponibile</h4>
+                        <p class="text-muted mb-4">Non è stato possibile caricare il quiz su @Model.CountryName.</p>
+                        <a href="/Globe" class="btn btn-primary">
+                            <i class="fas fa-globe me-2"></i>Torna al Globo
+                        </a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="no-quiz-container p-5 bg-light rounded shadow-sm text-center">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h3>Nessun quiz disponibile</h3>
+                    <p class="text-muted mb-4">Seleziona un paese dal globo per generare un quiz.</p>
+                    <a href="/Globe" class="btn btn-primary">
+                        <i class="fas fa-globe me-2"></i>Torna al Globo
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            console.log("DEBUG - Parametri URL ricevuti:");
+            console.log("country:", urlParams.get('country'));
+            console.log("questionCount:", urlParams.get('questionCount'));
+            console.log("difficulty:", urlParams.get('difficulty'));
+        });
+        // Variabili globali
+        let quizData = null;
+        let quizProgress = {
+            currentQuestionIndex: 0,
+            answeredQuestions: [],
+            score: 0,
+            completed: false
+        };
+
+        // Funzione per mostrare/nascondere l'animazione di caricamento
+        function showLoading(isLoading) {
+            const loadingEl = document.getElementById('quiz-loading');
+            const contentEl = document.getElementById('quiz-content');
+            const noQuizEl = document.getElementById('no-quiz-available');
+            const resultsEl = document.getElementById('quiz-results');
+
+            if (loadingEl) loadingEl.style.display = isLoading ? 'block' : 'none';
+            if (contentEl) contentEl.style.display = isLoading ? 'none' : 'block';
+            if (noQuizEl) noQuizEl.style.display = 'none';
+            if (resultsEl) resultsEl.style.display = 'none';
+        }
+
+        // Funzione per mostrare un errore
+        function showError(message) {
+            console.error("Errore:", message);
+
+            const loadingEl = document.getElementById('quiz-loading');
+            const contentEl = document.getElementById('quiz-content');
+            const noQuizEl = document.getElementById('no-quiz-available');
+
+            if (loadingEl) loadingEl.style.display = 'none';
+            if (contentEl) contentEl.style.display = 'none';
+            if (noQuizEl) {
+                const messageEl = noQuizEl.querySelector('p');
+                if (messageEl) messageEl.textContent = message;
+                noQuizEl.style.display = 'block';
+            }
+        }
+
+        // Funzione per salvare il progresso del quiz
+        function saveQuizProgress() {
+            try {
+                localStorage.setItem('quizProgress', JSON.stringify(quizProgress));
+                console.log('Progresso salvato:', quizProgress);
+            } catch (error) {
+                console.error('Errore nel salvataggio del progresso:', error);
+            }
+        }
+
+        function updateProgressBar() {
+            const progressBar = document.querySelector('.progress-bar');
+            if (!progressBar) return;
+
+            const totalQuestions = quizData.questions.length;
+            const answeredCount = quizProgress.answeredQuestions.length;
+            const progress = Math.round((answeredCount / totalQuestions) * 100);
+
+            console.log(`Aggiornamento barra di progresso: ${answeredCount}/${totalQuestions} (${progress}%)`);
+
+            progressBar.style.width = `${progress}%`;
+            progressBar.setAttribute('aria-valuenow', progress);
+        }
+
+        // Funzione per inizializzare il progresso del quiz
+        function initQuizProgress() {
+            console.log("Inizializzazione di un NUOVO progresso del quiz");
+
+            // Crea un nuovo progresso completamente vuoto
+            quizProgress = {
+                currentQuestionIndex: 0,
+                score: 0,
+                completed: false,
+                answeredQuestions: [] // Importante: array vuoto, nessuna risposta precedente
+            };
+
+            console.log("Nuovo progresso inizializzato:", quizProgress);
+        }
+
+        function loadQuiz() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const country = urlParams.get('country');
+
+            // Ottieni i parametri dall'URL
+            const questionCount = parseInt(urlParams.get('questionCount') || 5);
+            const difficulty = urlParams.get('difficulty') || "medium";
+
+            // Log semplificato per evitare errori di sintassi
+            console.log("PARAMETRI QUIZ DA URL - paese:", country,
+                        ", domande:", questionCount,
+                        ", difficoltà:", difficulty);
+
+            if (!country) {
+                showError("Nessun paese specificato nell'URL");
+                return;
+            }
+
+            showLoading(true);
+            console.log("Caricamento quiz per:", country);
+
+            // Aggiungi un timestamp per evitare il caching
+            const timestamp = Date.now();
+
+            // Carica il quiz dall'API con cache-busting
+            fetch(`/api/Quiz/generate?_nocache=${timestamp}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache, no-store, must-revalidate', // Previeni caching HTTP
+                    'Pragma': 'no-cache', // Supporto per browser legacy
+                    'Expires': '0' // Per proxy
+                },
+                body: JSON.stringify({
+                    CountryName: country,
+                    QuestionCount: questionCount,
+                    Difficulty: difficulty
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(text || `Errore del server: ${response.status}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Quiz generato dall'API:", data);
+
+                if (!data || !data.success || !data.quiz) {
+                    throw new Error("Formato risposta API non valido");
+                }
+
+                // IMPORTANTE: Elimina eventuali dati salvati in localStorage
+                localStorage.removeItem('quizData');
+                localStorage.removeItem('quizProgress');
+                sessionStorage.removeItem('quizData');
+                sessionStorage.removeItem('quizProgress');
+
+                quizData = data.quiz;
+
+                // Inizializza un nuovo progresso (importante: questo resetta tutto)
+                initQuizProgress();
+
+                // Randomizza le posizioni delle risposte
+                randomizeQuizOptions();
+
+                // Renderizza il quiz
+                renderQuiz();
+                showLoading(false);
+            })
+            .catch(error => {
+                console.error("Errore nel caricamento del quiz:", error);
+                showError(`Impossibile caricare il quiz: ${error.message}`);
+                showLoading(false);
+            });
+        }
+
+        // Funzione per randomizzare le posizioni delle opzioni
+        function randomizeQuizOptions() {
+            if (!quizData || !quizData.questions) {
+                console.log("Nessuna domanda da randomizzare");
+                return;
+            }
+
+            console.log("Randomizzazione delle posizioni delle risposte...");
+
+            quizData.questions.forEach(question => {
+                if (!question.options || !Array.isArray(question.options)) return;
+
+                // Salva l'opzione corretta
+                const correctOption = question.options[question.correctAnswerIndex];
+
+                // Crea un array delle opzioni
+                const options = [...question.options];
+
+                // Mescola le opzioni
+                for (let i = options.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [options[i], options[j]] = [options[j], options[i]];
+                }
+
+                // Aggiorna le opzioni e l'indice della risposta corretta
+                question.options = options;
+                question.correctAnswerIndex = options.indexOf(correctOption);
+            });
+
+            console.log("Randomizzazione completata");
+
+            // Verifica che la distribuzione sia migliorata
+            verifyAnswerPositionDistribution(quizData);
+        }
+
+        // Funzione per verificare la distribuzione delle risposte
+        function verifyAnswerPositionDistribution(quiz) {
+            if (!quiz || !quiz.questions || quiz.questions.length === 0) return;
+
+            const distribution = [0, 0, 0, 0];
+
+            quiz.questions.forEach(question => {
+                if (question.correctAnswerIndex >= 0 && question.correctAnswerIndex < 4) {
+                    distribution[question.correctAnswerIndex]++;
+                }
+            });
+
+            console.log("Distribuzione delle posizioni delle risposte corrette:");
+            console.log(`Posizione A: ${distribution[0]} (${Math.round(distribution[0]/quiz.questions.length*100)}%)`);
+            console.log(`Posizione B: ${distribution[1]} (${Math.round(distribution[1]/quiz.questions.length*100)}%)`);
+            console.log(`Posizione C: ${distribution[2]} (${Math.round(distribution[2]/quiz.questions.length*100)}%)`);
+            console.log(`Posizione D: ${distribution[3]} (${Math.round(distribution[3]/quiz.questions.length*100)}%)`);
+
+            const maxCount = Math.max(...distribution);
+            const totalQuestions = quiz.questions.length;
+            const expectedPerPosition = totalQuestions / 4;
+
+            if (maxCount > expectedPerPosition * 1.5) {
+                console.warn("ATTENZIONE: Possibile bias nella distribuzione delle risposte corrette!");
+            } else {
+                console.log("Distribuzione delle risposte corrette sembra bilanciata.");
+            }
+        }
+
+        function renderQuiz() {
+            try {
+                if (!quizData || !quizData.questions || quizData.questions.length === 0) {
+                    console.error("Dati del quiz mancanti o non validi");
+                    showError("Dati del quiz non validi");
+                    return;
+                }
+
+                const currentIndex = quizProgress.currentQuestionIndex;
+                const totalQuestions = quizData.questions.length;
+
+                if (currentIndex >= totalQuestions) {
+                    console.error("Indice domanda fuori range");
+                    quizProgress.currentQuestionIndex = 0;
+                    return;
+                }
+
+                const currentQuestion = quizData.questions[currentIndex];
+                console.log(`Rendering domanda ${currentIndex + 1} di ${totalQuestions}`);
+
+                // Aggiorna il testo di progresso
+                document.querySelector('.progress-text').textContent = `Domanda ${currentIndex + 1} di ${totalQuestions}`;
+
+                // Trova se questa domanda è già stata risposta
+                const answeredData = quizProgress.answeredQuestions.find(q => q.questionIndex === currentIndex);
+                const isAnswered = !!answeredData;
+
+                // Renderizza la domanda - SENZA BOTTONI DI NAVIGAZIONE INIZIALI
+                const questionContainer = document.getElementById('questionContainer');
+                questionContainer.innerHTML = `
+                    <div class="question-container">
+                        <div class="question-category mb-2">
+                            <span class="badge bg-primary">${currentQuestion.category || 'Geografia'}</span>
+                        </div>
+                        <h3 class="question-text mb-4">${currentQuestion.question}</h3>
+                        <div class="options-container">
+                            ${currentQuestion.options.map((option, i) => `
+                                <div class="option-item mb-3">
+                                    <button class="btn ${isAnswered ?
+                                        (i === answeredData.selectedAnswerIndex ?
+                                            (answeredData.isCorrect ? 'btn-success' : 'btn-danger') :
+                                            (i === currentQuestion.correctAnswerIndex && !answeredData.isCorrect ? 'btn-success' : 'btn-secondary'))
+                                        : 'btn-option'} w-100 text-start p-3"
+                                        data-index="${i}" ${isAnswered ? 'disabled' : ''}>
+                                        <span class="option-label">${String.fromCharCode(65 + i)}</span>
+                                        <span class="option-text">${option}</span>
+                                        ${isAnswered ?
+                                            (i === answeredData.selectedAnswerIndex ?
+                                                `<i class="fas ${answeredData.isCorrect ? 'fa-check' : 'fa-times'} ms-2"></i>` :
+                                                (i === currentQuestion.correctAnswerIndex && !answeredData.isCorrect ?
+                                                    '<i class="fas fa-check ms-2"></i>' : ''))
+                                            : ''}
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <div class="result-container mt-4"></div>
+
+                        <!-- Contenitore per i pulsanti di navigazione che appariranno solo dopo la risposta -->
+                        <div class="navigation-container mt-4"></div>
+                    </div>
+                `;
+
+                // Aggiungi event listener alle opzioni solo se non è già stata risposta
+                if (!isAnswered) {
+                    document.querySelectorAll('.btn-option').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const selectedIndex = parseInt(this.dataset.index);
+                            handleAnswerSelection(selectedIndex);
+                        });
+                    });
+                } else {
+                    // Se già risposta, mostra spiegazione e pulsanti di navigazione
+                    showAnswerResult(answeredData.selectedAnswerIndex);
+                    addNavigationButtons();
+                }
+
+                // Aggiorna la barra di progresso
+                updateProgressBar();
+
+            } catch (error) {
+                console.error('Errore durante il rendering del quiz:', error);
+                showError(`Si è verificato un errore: ${error.message}`);
+            }
+        }
+
+        function addNavigationButtons() {
+            const currentIndex = quizProgress.currentQuestionIndex;
+            const totalQuestions = quizData.questions.length;
+
+            // Trova il contenitore della navigazione
+            const navigationContainer = document.querySelector('.navigation-container');
+            if (navigationContainer) {
+                navigationContainer.innerHTML = `
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-outline-primary" id="prevQuestion" ${currentIndex === 0 ? 'disabled' : ''}>
+                            <i class="fas fa-arrow-left me-2"></i>Precedente
+                        </button>
+                        <button class="btn btn-primary" id="nextQuestion">
+                            ${currentIndex === totalQuestions - 1 ? 'Vedi risultati' : 'Prossima'}
+                            <i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                    </div>
+                `;
+
+                // Aggiungi event listener ai pulsanti
+                document.getElementById('nextQuestion').addEventListener('click', function() {
+                    if (currentIndex < totalQuestions - 1) {
+                        quizProgress.currentQuestionIndex += 1;
+                        renderQuiz();
+                    } else {
+                        showResults();
+                    }
+                });
+
+                document.getElementById('prevQuestion').addEventListener('click', function() {
+                    if (currentIndex > 0) {
+                        quizProgress.currentQuestionIndex -= 1;
+                        renderQuiz();
+                    }
+                });
+            }
+        }
+
+        // Funzione per salvare i risultati del quiz al server - VERSIONE CORRETTA
+        function saveQuizResult(callback) {
+            console.log("Tentativo di salvataggio dei risultati del quiz...");
+
+            // Verifica se quizData è disponibile
+            if (!quizData) {
+                console.error("Errore: quizData è null, impossibile salvare i risultati");
+                if (callback) callback(false);
+                return;
+            }
+
+            // Funzione per ottenere il codice del paese dal nome (semplificata)
+            function getCountryCode(countryName) {
+                if (!countryName) return "";
+
+                // Mappatura semplificata di alcuni paesi comuni
+                const countryMap = {
+                    "United States": "US",
+                    "United States of America": "US",
+                    "United Kingdom": "GB",
+                    "Italy": "IT",
+                    "France": "FR",
+                    "Germany": "DE",
+                    "Spain": "ES",
+                    "Japan": "JP",
+                    "China": "CN",
+                    "India": "IN",
+                    "Brazil": "BR",
+                    "Australia": "AU",
+                    "Canada": "CA",
+                    "Mexico": "MX",
+                    "Russia": "RU",
+                    // Aggiungi altri paesi secondo necessità
+                };
+
+                // Restituisci il codice se esiste nella mappatura, altrimenti una stringa vuota o le prime 2 lettere
+                return countryMap[countryName] || (countryName.length >= 2 ? countryName.substring(0, 2).toUpperCase() : "XX");
+            }
+
+            // Prepara i dati da inviare
+            const countryName = quizData.countryName || "Sconosciuto";
+            const quizResultData = {
+                quizId: quizData.id || 1,
+                countryName: countryName,
+                countryCode: quizData.countryCode || getCountryCode(countryName),
+                difficulty: quizData.difficulty || 'medium',
+                score: quizProgress.score,
+                totalQuestions: quizData.questions.length,
+                startedAt: new Date(Date.now() - 600000).toISOString() // 10 minuti fa
+            };
+
+            console.log("Dati da inviare:", quizResultData);
+
+            // Invia i dati tramite fetch API
+            fetch('/api/QuizResult/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(quizResultData),
+                credentials: 'include'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        try {
+                            return Promise.reject(JSON.parse(text));
+                        } catch (e) {
+                            console.warn("Risposta non è in formato JSON:", text);
+                            return Promise.reject({ success: false, message: "Errore del server" });
+                        }
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Risposta dal server:", data);
+                if (data.success) {
+                    console.log(`Risultato quiz salvato con successo! ID: ${data.attemptId}`);
+
+                    // Controlla se l'utente era autenticato (per informazione)
+                    if (!data.isAuthenticated) {
+                        console.log("Nota: risultato salvato come utente anonimo. Accedi per visualizzare nella dashboard.");
+                    }
+
+                    if (callback) callback(true);
+                } else {
+                    console.warn("Avviso dal server:", data.message);
+                    if (callback) callback(false);
+                }
+            })
+            .catch(error => {
+                console.error("Errore nella chiamata API:", error);
+
+                // Se è un errore con formato specifico (dal server)
+                const errorMessage = error.message || "Errore durante il salvataggio dei risultati";
+                console.error("Dettaglio errore:", errorMessage);
+
+                if (callback) callback(false);
+            });
+        }
+
+        function showResults() {
+            console.log("Mostrando risultati del quiz");
+
+            quizProgress.completed = true;
+            saveQuizResult();
+            const totalQuestions = quizData.questions.length;
+            const correctAnswers = quizProgress.score;
+            const percentage = Math.round((correctAnswers / totalQuestions) * 100);
+
+            // Determina il messaggio in base al punteggio
+            let resultMessage, resultClass;
+            if (percentage >= 90) {
+                resultMessage = 'Eccellente! Sei un esperto!';
+                resultClass = 'text-success';
+            } else if (percentage >= 70) {
+                resultMessage = 'Molto bene! Le tue conoscenze sono solide.';
+                resultClass = 'text-primary';
+            } else if (percentage >= 50) {
+                resultMessage = 'Buono! C\'è ancora margine di miglioramento.';
+                resultClass = 'text-info';
+            } else {
+                resultMessage = 'Continua a studiare! Puoi fare meglio.';
+                resultClass = 'text-danger';
+            }
+
+            // Crea il contenuto HTML per i risultati
+            const quizContainer = document.querySelector('.quiz-container');
+            quizContainer.innerHTML = `
+                <div class="results-container text-center py-4">
+                    <h2 class="mb-4">Risultati del Quiz</h2>
+
+                    <div class="result-circle mb-4">
+                        <div class="result-percentage ${resultClass}">${percentage}%</div>
+                        <div class="result-fraction">${correctAnswers}/${totalQuestions}</div>
+                    </div>
+
+                    <h3 class="${resultClass} mb-4">${resultMessage}</h3>
+
+                    <div class="results-actions d-flex justify-content-center gap-3 mb-5">
+                        <button id="reviewQuizBtn" class="btn btn-primary">
+                            <i class="fas fa-search me-2"></i>Rivedi risposte
+                        </button>
+                        <button id="newQuizBtn" class="btn btn-outline-primary">
+                            <i class="fas fa-redo me-2"></i>Nuovo quiz
+                        </button>
+                    </div>
+
+                    <div class="answer-summary">
+                        <h4 class="mb-3">Riepilogo risposte:</h4>
+                        <div class="answer-list">
+                            ${quizData.questions.map((question, index) => {
+                                const answer = quizProgress.answeredQuestions.find(a => a.questionIndex === index);
+                                const isCorrect = answer && answer.isCorrect;
+
+                                return `
+                                <div class="answer-item mb-3 d-flex align-items-center">
+                                    <div class="answer-icon me-3">
+                                        <i class="fas ${isCorrect ? 'fa-check text-success' : 'fa-times text-danger'}"></i>
+                                    </div>
+                                    <div class="answer-text flex-grow-1 text-start">
+                                        ${question.question}
+                                    </div>
+                                    <div class="answer-review">
+                                        <button class="btn btn-sm btn-outline-secondary review-answer-btn"
+                                            data-question-index="${index}">Dettagli</button>
+                                    </div>
+                                </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Aggiungi event listener ai pulsanti
+            document.getElementById('reviewQuizBtn').addEventListener('click', function() {
+                quizProgress.currentQuestionIndex = 0;
+                renderQuiz();
+            });
+
+            document.getElementById('newQuizBtn').addEventListener('click', function() {
+                if (confirm('Vuoi iniziare un nuovo quiz? Il progresso attuale sarà perso.')) {
+                    window.location.href = '/Globe';
+                }
+            });
+
+            // Aggiungi event listener ai pulsanti di revisione
+            document.querySelectorAll('.review-answer-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const questionIndex = parseInt(this.dataset.questionIndex);
+                    quizProgress.currentQuestionIndex = questionIndex;
+                    renderQuiz();
+                });
+            });
+
+            // Applica stili CSS per i risultati
+            const style = document.createElement('style');
+            style.textContent = `
+                .result-circle {
+                    width: 150px;
+                    height: 150px;
+                    border-radius: 50%;
+                    border: 10px solid #f0f0f0;
+                    margin: 0 auto;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    position: relative;
+                }
+                .result-percentage {
+                    font-size: 2.5rem;
+                    font-weight: bold;
+                }
+                .result-fraction {
+                    font-size: 1.2rem;
+                    color: #666;
+                }
+                .answer-item {
+                    padding: 10px;
+                    border-radius: 8px;
+                    background-color: #f8f9fa;
+                }
+                .answer-item:hover {
+                    background-color: #e9ecef;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        function handleAnswerSelection(selectedIndex) {
+            console.log("Risposta selezionata:", selectedIndex);
+
+            const currentIndex = quizProgress.currentQuestionIndex;
+            const currentQuestion = quizData.questions[currentIndex];
+            const correctIndex = currentQuestion.correctAnswerIndex;
+
+            // Verifica se è corretta
+            const isCorrect = selectedIndex === correctIndex;
+
+            // Disabilita tutti i pulsanti per evitare selezioni multiple
+            document.querySelectorAll('.btn-option').forEach(button => {
+                button.disabled = true;
+            });
+
+            // Salva la risposta nel progresso
+            quizProgress.answeredQuestions.push({
+                questionIndex: currentIndex,
+                selectedAnswerIndex: selectedIndex,
+                isCorrect: isCorrect
+            });
+
+            // Aggiorna il punteggio
+            if (isCorrect) {
+                quizProgress.score += 1;
+            }
+
+            // Mostra il risultato
+            showAnswerResult(selectedIndex);
+
+            // Aggiungi i pulsanti di navigazione (NON DUPLICATI)
+            addNavigationButtons();
+
+            // Aggiorna la barra di progresso
+            updateProgressBar();
+        }
+
+        function showAnswerResult(selectedIndex) {
+            const currentIndex = quizProgress.currentQuestionIndex;
+            const currentQuestion = quizData.questions[currentIndex];
+            const correctIndex = currentQuestion.correctAnswerIndex;
+            const isCorrect = selectedIndex === correctIndex;
+
+            // Evidenzia la risposta selezionata
+            const selectedButton = document.querySelector(`[data-index="${selectedIndex}"]`);
+            if (selectedButton) {
+                selectedButton.classList.remove('btn-option');
+                selectedButton.classList.add(isCorrect ? 'btn-success' : 'btn-danger');
+
+                // Aggiungi icona se non c'è già
+                if (!selectedButton.querySelector('.fas')) {
+                    const icon = document.createElement('i');
+                    icon.className = isCorrect ? 'fas fa-check ms-2' : 'fas fa-times ms-2';
+                    selectedButton.appendChild(icon);
+                }
+            }
+
+            // Se la risposta era sbagliata, evidenzia la risposta corretta
+            if (!isCorrect) {
+                const correctButton = document.querySelector(`[data-index="${correctIndex}"]`);
+                if (correctButton) {
+                    correctButton.classList.remove('btn-option');
+                    correctButton.classList.add('btn-success');
+
+                    // Aggiungi icona se non c'è già
+                    if (!correctButton.querySelector('.fas')) {
+                        const icon = document.createElement('i');
+                        icon.className = 'fas fa-check ms-2';
+                        correctButton.appendChild(icon);
+                    }
+                }
+            }
+
+            // Mostra la spiegazione se disponibile
+            if (currentQuestion.explanation) {
+                const resultContainer = document.querySelector('.result-container');
+                if (resultContainer) {
+                    resultContainer.innerHTML = `
+                        <div class="explanation-container p-3 bg-light border-start border-4 border-info">
+                            <h5 class="mb-2"><i class="fas fa-info-circle me-2 text-info"></i>Spiegazione</h5>
+                            <p class="mb-0">${currentQuestion.explanation}</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Funzione per renderizzare i risultati del quiz
+        function renderQuizResults() {
+            const resultsContainer = document.getElementById('quiz-results');
+            if (!resultsContainer) return;
+
+            const contentEl = document.getElementById('quiz-content');
+            if (contentEl) contentEl.style.display = 'none';
+
+            const score = quizProgress.score;
+            const total = quizData.questions.length;
+            const percentage = (score / total) * 100;
+
+            // Determina la classe CSS e il messaggio in base al punteggio
+            let scoreClass, resultMessage, resultDescription;
+            if (percentage >= 80) {
+                scoreClass = "good";
+                resultMessage = "Eccellente!";
+                resultDescription = `Hai una conoscenza approfondita di ${quizData.countryName}! Congratulazioni!`;
+            } else if (percentage >= 60) {
+                scoreClass = "average";
+                resultMessage = "Buono!";
+                resultDescription = `Hai una buona conoscenza di ${quizData.countryName}, ma c'è ancora margine di miglioramento.`;
+            } else {
+                scoreClass = "poor";
+                resultMessage = "Da migliorare";
+                resultDescription = `Continua a studiare ${quizData.countryName} per aumentare la tua conoscenza.`;
+            }
+
+            resultsContainer.innerHTML = `
+                <div class="result-container p-4 bg-light rounded shadow-sm">
+                    <h3 class="result-title text-center mb-4">
+                        <i class="fas fa-trophy text-warning me-2"></i>Quiz Completato!
+                    </h3>
+
+                    <div class="result-score text-center mb-4">
+                        <div class="score-circle ${scoreClass} mx-auto">
+                            <div class="score-number">${score}</div>
+                            <div class="score-total">/${total}</div>
+                        </div>
+                    </div>
+
+                    <div class="result-message text-center mb-4">
+                        <h4 class="text-${scoreClass === "good" ? "success" : (scoreClass === "average" ? "warning" : "danger")}-dark">${resultMessage}</h4>
+                        <p class="text-muted">${resultDescription}</p>
+                    </div>
+
+                    <div class="result-actions d-flex justify-content-center gap-3">
+                        <button onclick="resetAndRestartQuiz('${quizData.countryName}')" class="btn btn-primary">
+                            <i class="fas fa-redo me-2"></i>Riprova
+                        </button>
+                        <a href="/Globe" class="btn btn-outline-secondary">
+                            <i class="fas fa-globe me-2"></i>Torna alla Mappa
+                        </a>
+                    </div>
+                </div>
+            `;
+
+            resultsContainer.style.display = 'block';
+        }
+
+        function resetAndRestartQuiz(countryName) {
+            console.log("Reset e riavvio quiz per:", countryName);
+
+            // Resetta esplicitamente il progresso
+            localStorage.removeItem('quizProgress');
+
+            // Ricarica la pagina con parametro action=restart per assicurare un reset completo
+            window.location.href = `/Quiz?country=${encodeURIComponent(countryName)}&action=restart&t=${Date.now()}`;
+        }
+
+        // Timeout di sicurezza per il caricamento
+        function setupLoadingTimeout() {
+            setTimeout(() => {
+                const loadingEl = document.getElementById('quiz-loading');
+                if (loadingEl && loadingEl.style.display !== 'none') {
+                    loadingEl.innerHTML = `
+                        <div class="alert alert-warning" role="alert">
+                            <h4 class="alert-heading"><i class="fas fa-clock me-2"></i>Caricamento prolungato</h4>
+                            <p>Il caricamento sta impiegando più tempo del previsto. Potrebbe esserci un problema con il server o con la connessione.</p>
+                            <hr>
+                            <p>Puoi attendere ancora o riprovare più tardi.</p>
+                            <button id="retry-button" class="btn btn-primary mt-2">
+                                <i class="fas fa-redo me-2"></i>Riprova
+                            </button>
+                        </div>
+                    `;
+
+                    const retryButton = document.getElementById('retry-button');
+                    if (retryButton) {
+                        retryButton.addEventListener('click', () => {
+                            window.location.reload();
+                        });
+                    }
+                }
+            }, 20000); // 20 secondi
+        }
+
+        // Inizializzazione quando il DOM è caricato
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                // Carica il quiz
+                loadQuiz();
+
+                // Imposta un timeout di sicurezza per il caricamento
+                setupLoadingTimeout();
+            } catch (error) {
+                console.error('Errore durante l\'inizializzazione:', error);
+                showError(`Si è verificato un errore: ${error.message}`);
+            }
+        });
+    </script>
+}
+
+@section Styles {
+    <style>
+        .quiz-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+
+        .quiz-title {
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-progress {
+            margin-bottom: 2rem;
+        }
+
+        .question-category {
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            line-height: 1.5;
+        }
+
+        .btn-option {
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            position: relative;
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+
+            .btn-option:hover:not(.disabled) {
+                background-color: #e9ecef;
+                transform: translateY(-2px);
+            }
+
+        .option-item.correct .btn-option {
+            background-color: #d4edda;
+            border-color: #28a745;
+        }
+
+        .option-item.incorrect .btn-option {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .option-label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background-color: #6c757d;
+            color: white;
+            border-radius: 50%;
+            margin-right: 12px;
+            font-weight: bold;
+        }
+
+        .option-item.correct .option-label {
+            background-color: #28a745;
+        }
+
+        .option-item.incorrect .option-label {
+            background-color: #dc3545;
+        }
+
+        .option-text {
+            font-size: 1.1rem;
+        }
+
+        .bg-success-light {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+
+        .bg-danger-light {
+            background-color: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+
+            .score-circle.good {
+                background: linear-gradient(135deg, #28a745, #20c997);
+            }
+
+            .score-circle.average {
+                background: linear-gradient(135deg, #fd7e14, #ffc107);
+            }
+
+            .score-circle.poor {
+                background: linear-gradient(135deg, #dc3545, #e83e8c);
+            }
+
+        .score-number {
+            font-size: 3.5rem;
+            line-height: 1;
+        }
+
+        .score-total {
+            font-size: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .text-success-dark {
+            color: #155724;
+        }
+
+        .text-warning-dark {
+            color: #856404;
+        }
+
+        .text-danger-dark {
+            color: #721c24;
+        }
+
+        .quiz-info-banner {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .question-count-option {
+            transition: all 0.3s ease;
+        }
+
+            .question-count-option:hover {
+                transform: translateY(-5px);
+            }
+
+            .question-count-option.selected .question-count-circle {
+                box-shadow: 0 0 0 3px #3498db, 0 5px 12px rgba(0,0,0,0.15);
+            }
+    </style>
+}

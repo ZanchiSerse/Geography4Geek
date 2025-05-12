@@ -1,0 +1,54 @@
+﻿@page
+@model Geography4Geek_1.Pages.Account.LoginModel
+@using Geography4Geek_1.Models
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Accedi</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <form id="loginForm" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mb-3">
+                <label asp-for="Input.Email" class="control-label">Email</label>
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Input.Password" class="control-label">Password</label>
+                <input asp-for="Input.Password" class="form-control" type="password" autocomplete="current-password" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Input.Role" class="control-label">Ruolo</label>
+                <select asp-for="Input.Role" class="form-control" asp-items="Html.GetEnumSelectList<UserRole>()">
+                    <option value="">Seleziona un ruolo</option>
+                </select>
+                <span asp-validation-for="Input.Role" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <div class="checkbox">
+                    <label asp-for="Input.RememberMe">
+                        <input asp-for="Input.RememberMe" />
+                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <button type="submit" class="btn btn-primary">Accedi</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="mt-4">
+    <p>Non hai un account?</p>
+    <!-- Pulsante di registrazione HTML diretto -->
+    <a href="/Account/Register" class="btn btn-success">Crea un nuovo account</a>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

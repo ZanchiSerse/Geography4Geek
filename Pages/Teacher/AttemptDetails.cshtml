@@ -1,0 +1,87 @@
+﻿@model Geography4Geek_1.Models.QuizAttempt
+@{
+    ViewData["Title"] = "Dettagli Tentativo";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <h1 class="my-4">Dettagli Tentativo Quiz</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Informazioni</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <tr>
+                            <th>Studente:</th>
+                            <td>@(Model.User?.UserName ?? "N/A")</td>
+                        </tr>
+                        <tr>
+                            <th>Paese:</th>
+                            <td>@Model.CountryName</td>
+                        </tr>
+                        <tr>
+                            <th>Difficoltà:</th>
+                            <td>@Model.Difficulty</td>
+                        </tr>
+                        <tr>
+                            <th>Punteggio:</th>
+                            <td>@Model.Score/@Model.TotalQuestions (@Model.ScorePercentage.ToString("0.0")%)</td>
+                        </tr>
+                        <tr>
+                            <th>Data inizio:</th>
+                            <td>@Model.StartedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                        </tr>
+                        <tr>
+                            <th>Data completamento:</th>
+                            <td>@(Model.CompletedAt?.ToString("dd/MM/yyyy HH:mm") ?? "In corso")</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Risposte</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Answers?.Any() == true)
+                    {
+                        <div class="list-group">
+                            @foreach (var answer in Model.Answers)
+                            {
+                                <div class="list-group-item @(answer.IsCorrect ? "list-group-item-success" : "list-group-item-danger")">
+                                    <h5 class="mb-2">
+                                        @if (answer.Question != null)
+                                        {
+                                            @answer.Question.Question
+                                        }
+                                        else
+                                        {
+                                            <span>Domanda #@(answer.QuestionIndex + 1)</span>
+                                        }
+                                    </h5>
+                                    <p>
+                                        <strong>Risposta selezionata:</strong> Opzione @(answer.SelectedAnswerIndex + 1)
+                                    </p>
+                                    <div class="badge @(answer.IsCorrect ? "bg-success" : "bg-danger")">
+                                        @(answer.IsCorrect ? "Corretta" : "Errata")
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">Nessuna risposta registrata.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

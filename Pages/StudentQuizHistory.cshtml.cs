@@ -1,0 +1,12 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace Geography4Geek_1.Pages
+{
+    public class StudentQuizHistoryModel : PageModel
+    {
+        public void OnGet()
+        {
+        }
+    }
+}

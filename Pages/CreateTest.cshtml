@@ -1,0 +1,20 @@
+﻿@page
+@model Geography4Geek_1.Pages.CreateTestModel
+@{
+    ViewData["Title"] = "Crea Test";
+}
+
+<div class="container mt-4">
+    <h1>Crea Test per la Dashboard</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <p>@Model.Message</p>
+
+            <div class="mt-3">
+                <a asp-page="/Teacher/Dashboard" class="btn btn-primary">Vai alla Dashboard</a>
+                <a href="javascript:location.reload()" class="btn btn-secondary ms-2">Crea un altro test</a>
+            </div>
+        </div>
+    </div>
+</div>

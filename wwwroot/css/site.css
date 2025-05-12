@@ -1,0 +1,181 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+/* Stili per la visualizzazione del globo */
+/*.cesium-viewer-timelineContainer,
+.cesium-viewer-animationContainer,
+.cesium-viewer-bottom {
+    display: none !important;
+}
+
+.cesium-viewer-toolbar {
+    right: 10px;
+    top: 10px;
+}
+
+.cesium-viewer {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}*/
+/* Stile personalizzato per la dashboard */
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+    font-weight: bold;
+}
+
+.card {
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    border: 1px solid #e3e6f0;
+    border-radius: 0.35rem;
+}
+
+.card-header {
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid #e3e6f0;
+}
+
+.progress {
+    height: 20px;
+    margin-bottom: 0;
+    background-color: #eaecf4;
+    border-radius: 0.35rem;
+}
+
+.progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+}
+
+.dropdown-menu {
+    font-size: 0.85rem;
+    border: none;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+}
+
+.dropdown-item {
+    padding: 0.5rem 1.5rem;
+}
+
+    .dropdown-item:hover {
+        background-color: #f8f9fc;
+    }
+
+.navbar-nav .nav-item .nav-link {
+    padding: 0.5rem 1rem;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+/* Stile per gli avatar circolari */
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Progresso e card stilizzate */
+.card.border-left-primary {
+    border-left: 4px solid #4e73df;
+}
+
+.card.border-left-success {
+    border-left: 4px solid #1cc88a;
+}
+
+.card.border-left-info {
+    border-left: 4px solid #36b9cc;
+}
+
+.card.border-left-warning {
+    border-left: 4px solid #f6c23e;
+}
+/* Stili per la modalità fallback */
+.fallback-mode .modal-content {
+    border-left: 5px solid #ffc107;
+}
+
+.country-fallback-info .alert {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Mantieni gli stili esistenti per quiz-ready-section */
+.quiz-ready-section {
+    background: linear-gradient(135deg, #f9f9f9, #f0f0f0);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    border-left: 4px solid #3498db;
+}
+
+.quiz-icon {
+    font-size: 2.2rem;
+    color: #3498db;
+    margin-right: 20px;
+}
+
+.quiz-text h5 {
+    color: #2c3e50;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.quiz-text p {
+    margin-bottom: 0;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .quiz-ready-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .quiz-icon {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+}

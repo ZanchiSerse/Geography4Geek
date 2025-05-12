@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Geography4Geek_1.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+
+    {
+        <li class="nav-item">
+            <span class="nav-link text-dark">Ciao @User.Identity?.Name!</span>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-page="/Account/Logout" method="post">
+                <button type="submit" class="nav-link btn btn-link text-dark">Disconnetti</button>
+            </form>
+        </li>
+    }
+
+    else
+
+    {
+        <li class="nav-item">
+            <!-- Link di registrazione HTML diretto per evitare problemi con tag helper -->
+            <a class="nav-link text-dark" href="/Account/Register">Registrati</a>
+        </li>
+        <li class="nav-item">
+            <!-- Link di login HTML diretto per evitare problemi con tag helper -->
+            <a class="nav-link text-dark" href="/Account/Login">Accedi</a>
+        </li>
+    }
+</ul>

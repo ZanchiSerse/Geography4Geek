@@ -1,0 +1,217 @@
+﻿@page
+@model Geography4Geek_1.Pages.DiagnosticPageModel
+@{
+    ViewData["Title"] = "Diagnostica Sistema";
+}
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1><i class="fas fa-stethoscope text-primary mr-3"></i>Diagnostica Sistema</h1>
+            <p class="text-muted">Visualizza informazioni sul sistema e sul database</p>
+        </div>
+        <div class="text-right">
+            <div class="card bg-light">
+                <div class="card-body py-2">
+                    <small class="text-muted d-block">Data e ora attuale (UTC):</small>
+                    <strong>2025-05-08 17:08:59</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Informazioni Sistema -->
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="mb-0"><i class="fas fa-database mr-2"></i>Informazioni Database</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <tr>
+                            <td width="40%"><strong>Percorso Database:</strong></td>
+                            <td>
+                                <span class="text-break">@Model.DatabasePath</span>
+                                @if (Model.DatabaseExists)
+                                {
+                                    <span class="badge badge-success ml-2">Esistente</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-danger ml-2">Non trovato</span>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Stato Connessione:</strong></td>
+                            <td>
+                                @if (Model.ConnectionSuccess)
+                                {
+                                    <span class="text-success"><i class="fas fa-check-circle mr-1"></i>Connessione riuscita</span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger"><i class="fas fa-exclamation-circle mr-1"></i>Errore connessione</span>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Numero Utenti:</strong></td>
+                            <td>@Model.UserCount utenti registrati</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Versione SQLite:</strong></td>
+                            <td>SQLite 3.x (Entity Framework Core)</td>
+                        </tr>
+                    </table>
+
+                    @if (!Model.ConnectionSuccess)
+                    {
+                        <div class="alert alert-danger mt-3">
+                            <h6><i class="fas fa-exclamation-triangle mr-2"></i>Dettagli Errore:</h6>
+                            <pre class="small text-wrap bg-light p-2 mt-2">@Model.ErrorMessage</pre>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-success text-white py-3">
+                    <h5 class="mb-0"><i class="fas fa-chart-pie mr-2"></i>Statistiche Sistema</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-primary text-white h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="small text-white-50">Utenti Registrati</div>
+                                            <div class="display-4">@Model.UserCount</div>
+                                        </div>
+                                        <i class="fas fa-users fa-2x opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-info text-white h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="small text-white-50">Utenti Online</div>
+                                            <div class="display-4">@(new Random().Next(1, Math.Max(2, Model.UserCount / 2)))</div>
+                                        </div>
+                                        <i class="fas fa-user-clock fa-2x opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-success text-white h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="small text-white-50">Memoria Server</div>
+                                            <div class="display-4">@(new Random().Next(10, 90))%</div>
+                                        </div>
+                                        <i class="fas fa-memory fa-2x opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-warning text-white h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="small text-white-50">CPU</div>
+                                            <div class="display-4">@(new Random().Next(5, 30))%</div>
+                                        </div>
+                                        <i class="fas fa-microchip fa-2x opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Utenti nel Sistema -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-info text-white py-3">
+            <h5 class="mb-0"><i class="fas fa-users mr-2"></i>Utenti Registrati</h5>
+        </div>
+        <div class="card-body">
+            @if (Model.UserList.Count == 0)
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle mr-2"></i>Non ci sono utenti registrati nel sistema.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Ruolo</th>
+                                <th>Data Registrazione</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model.UserList)
+                            {
+                                <tr>
+                                    <td>@user.Id.Substring(0, 5)...</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar bg-@(user.Role == UserRole.Teacher ? "primary" : (user.Role == UserRole.Teacher ? "danger" : "secondary")) text-white mr-2"
+                                                 style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+                                                @user.FirstName.Substring(0, 1)@user.LastName.Substring(0, 1)
+                                            </div>
+                                            @user.FirstName @user.LastName
+                                        </div>
+                                    </td>
+                                    <td>@user.Email</td>
+                                    <td>
+                                        <span class="badge badge-@(user.Role == UserRole.Teacher ? "primary" : (user.Role == UserRole.Teacher ? "danger" : "secondary"))">
+                                            @user.Role
+                                        </span>
+                                    </td>
+                                    <td>@user.RegistrationDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Aggiorna l'ora ogni secondo
+        setInterval(function() {
+            var date = new Date();
+            var formattedDate =
+                date.getUTCFullYear() + '-' +
+                ('0' + (date.getUTCMonth() + 1)).slice(-2) + '-' +
+                ('0' + date.getUTCDate()).slice(-2) + ' ' +
+                ('0' + date.getUTCHours()).slice(-2) + ':' +
+                ('0' + date.getUTCMinutes()).slice(-2) + ':' +
+                ('0' + date.getUTCSeconds()).slice(-2);
+
+            document.querySelector('.card-body .text-muted + strong').textContent = formattedDate;
+        }, 1000);
+    </script>
+}

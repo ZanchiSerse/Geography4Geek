@@ -1,0 +1,956 @@
+﻿@page
+@model Geography4Geek_1.Pages.IndexModel
+@{
+    ViewData["Title"] = "Geography4Geek - Esplora e Impara";
+}
+
+<!-- Hero Section -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h1 class="display-4 fw-bold text-primary mb-3">Esplora il Mondo con Geography4Geek</h1>
+                <p class="lead mb-4">Una piattaforma educativa interattiva che unisce l'esplorazione geografica al divertimento dei quiz. Naviga sul nostro globo 3D, scopri informazioni dettagliate sui paesi e metti alla prova le tue conoscenze!</p>
+
+                @if (!User.Identity?.IsAuthenticated ?? true)
+                {
+                    <div class="cta-buttons">
+                        <a href="/Account/Register" class="btn btn-primary btn-lg me-3 px-4 py-2 shadow-sm">
+                            <i class="fas fa-user-plus me-2"></i>Registrati Ora
+                        </a>
+                        <a href="/Account/Login" class="btn btn-outline-primary btn-lg px-4 py-2">
+                            <i class="fas fa-sign-in-alt me-2"></i>Accedi
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="cta-buttons">
+                        <a href="/Globe/Index" class="btn btn-primary btn-lg me-3 px-4 py-2 shadow-sm">
+                            <i class="fas fa-globe-americas me-2"></i>Esplora il Globo
+                        </a>
+                    </div>
+                }
+            </div>
+            <div class="col-lg-6">
+                <!-- Globo animato con CSS -->
+                <div class="globe-animation-container">
+                    <div class="globe-illustration">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <div class="floating-item floating-pin1">
+                        <i class="fas fa-map-pin"></i>
+                    </div>
+                    <div class="floating-item floating-pin2">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="floating-item floating-quiz">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Caratteristiche Principali</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="feature-card shadow-sm h-100">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <h3>Globo 3D Interattivo</h3>
+                    <p>Esplora il mondo con un globo tridimensionale completamente interattivo. Ruota, zoom e seleziona qualsiasi paese con un semplice click.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card shadow-sm h-100">
+                    <div class="feature-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3>Informazioni Dettagliate</h3>
+                    <p>Accedi a informazioni complete e aggiornate su ogni paese: geografia, storia, cultura, economia e curiosità interessanti.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card shadow-sm h-100">
+                    <div class="feature-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <h3>Quiz Personalizzati</h3>
+                    <p>Metti alla prova le tue conoscenze con quiz generati dinamicamente in base al paese selezionato. Scegli la difficoltà e il numero di domande.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Country Exploration -->
+<section class="countries-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Esplora Paesi da Tutto il Mondo</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="country-card shadow h-100">
+                    <div class="country-icon europe-bg">
+                        <i class="fas fa-monument"></i>
+                    </div>
+                    <div class="country-info">
+                        <div class="country-flag-placeholder" id="italy-flag">IT</div>
+                        <h4>Italia</h4>
+                        <p>Storia millenaria, arte rinascimentale, e paesaggi mozzafiato dalle Alpi alla Sicilia.</p>
+                        <div class="country-tags">
+                            <span class="badge bg-light text-dark">Europa</span>
+                            <span class="badge bg-light text-dark">Storia</span>
+                            <span class="badge bg-light text-dark">Arte</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="country-card shadow h-100">
+                    <div class="country-icon asia-bg">
+                        <i class="fas fa-torii-gate"></i>
+                    </div>
+                    <div class="country-info">
+                        <div class="country-flag-placeholder" id="japan-flag">JP</div>
+                        <h4>Giappone</h4>
+                        <p>Tradizione e innovazione si fondono in questo affascinante paese asiatico.</p>
+                        <div class="country-tags">
+                            <span class="badge bg-light text-dark">Asia</span>
+                            <span class="badge bg-light text-dark">Tecnologia</span>
+                            <span class="badge bg-light text-dark">Cultura</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="country-card shadow h-100">
+                    <div class="country-icon americas-bg">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <div class="country-info">
+                        <div class="country-flag-placeholder" id="brazil-flag">BR</div>
+                        <h4>Brasile</h4>
+                        <p>Foreste pluviali, spiagge tropicali e una vibrante cultura in Sudamerica.</p>
+                        <div class="country-tags">
+                            <span class="badge bg-light text-dark">Sudamerica</span>
+                            <span class="badge bg-light text-dark">Natura</span>
+                            <span class="badge bg-light text-dark">Musica</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How it Works -->
+<section class="how-it-works py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Come Funziona</h2>
+        <div class="process-timeline">
+            <div class="timeline-item">
+                <div class="timeline-number">1</div>
+                <div class="timeline-content">
+                    <h4><i class="fas fa-sign-in-alt text-primary me-2"></i>Registrati o Accedi</h4>
+                    <p>Crea un account gratuito per accedere a tutte le funzionalità della piattaforma. Gli insegnanti ottengono strumenti aggiuntivi per monitorare i progressi degli studenti.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-number">2</div>
+                <div class="timeline-content">
+                    <h4><i class="fas fa-globe-americas text-primary me-2"></i>Naviga il Globo 3D</h4>
+                    <p>Usa il nostro globo interattivo per esplorare il mondo. Ruota, zooma e clicca su qualsiasi paese per selezionarlo.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-number">3</div>
+                <div class="timeline-content">
+                    <h4><i class="fas fa-book-open text-primary me-2"></i>Scopri Informazioni</h4>
+                    <p>Accedi a dati completi sul paese selezionato: geografia, storia, popolazione, economia e curiosità.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-number">4</div>
+                <div class="timeline-content">
+                    <h4><i class="fas fa-question-circle text-primary me-2"></i>Genera Quiz</h4>
+                    <p>Crea quiz personalizzati sul paese che stai esplorando. Scegli il numero di domande e il livello di difficoltà.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-number">5</div>
+                <div class="timeline-content">
+                    <h4><i class="fas fa-chart-line text-primary me-2"></i>Monitora i Progressi</h4>
+                    <p>Visualizza i tuoi risultati e monitora i tuoi miglioramenti nel tempo. Gli insegnanti possono accedere a statistiche dettagliate sugli studenti.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quiz Preview -->
+<section class="quiz-preview py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h2 class="mb-4">Quiz Interattivi e Personalizzati</h2>
+                <p class="lead">Metti alla prova le tue conoscenze con quiz generati automaticamente in base alle informazioni del paese selezionato.</p>
+
+                <div class="quiz-features mt-4">
+                    <div class="quiz-feature">
+                        <i class="fas fa-sliders-h text-primary"></i>
+                        <div>
+                            <h5>Livelli di Difficoltà</h5>
+                            <p>Scegli tra facile, medio e difficile in base alla tua preparazione.</p>
+                        </div>
+                    </div>
+                    <div class="quiz-feature">
+                        <i class="fas fa-list-ol text-primary"></i>
+                        <div>
+                            <h5>Numero di Domande</h5>
+                            <p>Personalizza la lunghezza del quiz: 5, 10, 15 o 20 domande.</p>
+                        </div>
+                    </div>
+                    <div class="quiz-feature">
+                        <i class="fas fa-brain text-primary"></i>
+                        <div>
+                            <h5>Domande Intelligenti</h5>
+                            <p>Domande generate dinamicamente dalle informazioni più recenti.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="quiz-card shadow">
+                    <div class="quiz-header">
+                        <span class="quiz-title">Quiz sull'Italia</span>
+                        <span class="quiz-badge">Medio</span>
+                    </div>
+                    <div class="quiz-body">
+                        <div class="quiz-question">
+                            <span class="question-number">1</span>
+                            <p>Qual è la capitale dell'Italia?</p>
+                        </div>
+                        <div class="quiz-options">
+                            <div class="option">
+                                <input type="radio" id="answer1" name="question1">
+                                <label for="answer1">Milano</label>
+                            </div>
+                            <div class="option correct">
+                                <input type="radio" id="answer2" name="question1" checked>
+                                <label for="answer2">Roma</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="answer3" name="question1">
+                                <label for="answer3">Firenze</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="answer4" name="question1">
+                                <label for="answer4">Napoli</label>
+                            </div>
+                        </div>
+                        <div class="quiz-navigation">
+                            <button class="btn btn-outline-secondary btn-sm disabled">Precedente</button>
+                            <div class="quiz-progress">
+                                <div class="progress">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 10%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span>1/10</span>
+                            </div>
+                            <button class="btn btn-primary btn-sm">Successiva</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- For Teachers -->
+<section class="teachers-section py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
+                <h2 class="mb-4">Strumenti per Insegnanti</h2>
+                <p class="lead">Geography4Geek offre funzionalità speciali per gli educatori che desiderano integrare la geografia nel curriculum.</p>
+
+                <div class="teacher-features mt-4">
+                    <div class="teacher-feature">
+                        <i class="fas fa-chart-bar text-success"></i>
+                        <div>
+                            <h5>Dashboard Analitica</h5>
+                            <p>Monitora i progressi degli studenti con grafici dettagliati e statistiche.</p>
+                        </div>
+                    </div>
+                    <div class="teacher-feature">
+                        <i class="fas fa-users text-success"></i>
+                        <div>
+                            <h5>Gestione Studenti</h5>
+                            <p>Visualizza i risultati individuali e identifica aree di miglioramento.</p>
+                        </div>
+                    </div>
+                    <div class="teacher-feature">
+                        <i class="fas fa-tasks text-success"></i>
+                        <div>
+                            <h5>Risultati Quiz</h5>
+                            <p>Analizza le prestazioni per argomento e difficoltà.</p>
+                        </div>
+                    </div>
+                </div>
+
+                @if (User.Identity?.IsAuthenticated ?? false && User.IsInRole("Teacher"))
+                {
+                    <div class="mt-4">
+                        <a href="/Teacher/Dashboard" class="btn btn-success">
+                            <i class="fas fa-chart-bar me-2"></i>Accedi alla Dashboard
+                        </a>
+                    </div>
+                }
+                else if (!(User.Identity?.IsAuthenticated ?? false))
+                {
+                    <div class="mt-4">
+                        <a href="/Account/Register" class="btn btn-outline-success">
+                            <i class="fas fa-chalkboard-teacher me-2"></i>Registrati come Insegnante
+                        </a>
+                    </div>
+                }
+            </div>
+            <div class="col-lg-6 order-lg-1">
+                <div class="dashboard-preview shadow">
+                    <div class="dashboard-header">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Dashboard Insegnante</span>
+                    </div>
+                    <div class="dashboard-body">
+                        <div class="dashboard-stat">
+                            <div class="stat-value">15</div>
+                            <div class="stat-label">Studenti Attivi</div>
+                        </div>
+                        <div class="dashboard-stat">
+                            <div class="stat-value">78</div>
+                            <div class="stat-label">Quiz Completati</div>
+                        </div>
+                        <div class="dashboard-stat">
+                            <div class="stat-value">72%</div>
+                            <div class="stat-label">Punteggio Medio</div>
+                        </div>
+                        <div class="dashboard-chart">
+                            <div class="chart-bars">
+                                <div class="chart-bar" style="height: 60%;"><span>L</span></div>
+                                <div class="chart-bar" style="height: 80%;"><span>M</span></div>
+                                <div class="chart-bar" style="height: 45%;"><span>M</span></div>
+                                <div class="chart-bar" style="height: 65%;"><span>G</span></div>
+                                <div class="chart-bar" style="height: 75%;"><span>V</span></div>
+                            </div>
+                            <div class="chart-label">Attività Settimanale</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+@if (!User.Identity?.IsAuthenticated ?? true)
+{
+    <section class="cta-section py-5 text-center text-white">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="mb-4">Pronto ad Esplorare il Mondo?</h2>
+                <p class="lead mb-4">Unisciti a Geography4Geek oggi e inizia il tuo viaggio di scoperta geografica.</p>
+                <div class="cta-buttons">
+                    <a href="/Account/Register" class="btn btn-light btn-lg px-5 me-3">
+                        <i class="fas fa-user-plus me-2"></i>Registrati Ora
+                    </a>
+                    <a href="/Account/Login" class="btn btn-outline-light btn-lg px-4">
+                        <i class="fas fa-sign-in-alt me-2"></i>Accedi
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+else
+{
+    <section class="logged-cta-section py-5 text-center">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="mb-4">Inizia a Esplorare!</h2>
+                <p class="lead mb-4">Sei pronto per scoprire il mondo e testare le tue conoscenze geografiche?</p>
+                <a href="/Globe/Index" class="btn btn-primary btn-lg px-5 shadow-sm">
+                    <i class="fas fa-globe-americas me-2"></i>Vai al Globo 3D
+                </a>
+            </div>
+        </div>
+    </section>
+}
+
+@section Styles {
+    <style>
+        /* Stili generali */
+        body {
+            color: #333;
+        }
+
+        section {
+            position: relative;
+            overflow: hidden;
+        }
+
+        h2 {
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 4rem 0;
+            position: relative;
+        }
+
+            .hero-section::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-image: radial-gradient(circle at 10% 20%, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0) 20%), radial-gradient(circle at 90% 80%, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0) 20%);
+                pointer-events: none;
+            }
+
+        /* Animazione Globo */
+        .globe-animation-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .globe-illustration {
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 5rem;
+            box-shadow: 0 10px 25px rgba(41, 128, 185, 0.3);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .floating-item {
+            position: absolute;
+            color: #2980b9;
+            opacity: 0.9;
+            font-size: 1.5rem;
+            border-radius: 50%;
+            filter: drop-shadow(0 3px 5px rgba(0,0,0,0.1));
+        }
+
+        .floating-pin1 {
+            top: 20%;
+            left: 35%;
+            animation: float 4s ease-in-out infinite;
+            color: #e74c3c;
+        }
+
+        .floating-pin2 {
+            bottom: 25%;
+            right: 35%;
+            animation: float 5s ease-in-out infinite 1s;
+            color: #f39c12;
+        }
+
+        .floating-quiz {
+            top: 40%;
+            right: 30%;
+            animation: float 3.5s ease-in-out infinite 0.5s;
+            color: #16a085;
+        }
+
+        @@keyframes pulse {
+            0%, 100%
+
+        {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+
+        }
+
+        @@keyframes float {
+            0%, 100%
+
+        {
+            transform: translateY(0) rotate(0deg);
+        }
+
+        50% {
+            transform: translateY(-15px) rotate(5deg);
+        }
+
+        }
+
+        /* Feature Cards */
+        .feature-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+
+            .feature-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+            }
+
+        .feature-icon {
+            margin: 0 auto 1.5rem;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(145deg, #f1f9ff, #e3f2fd);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #2196f3;
+        }
+
+        /* Country Cards */
+        .country-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+            .country-card:hover {
+                transform: translateY(-5px);
+            }
+
+        .country-icon {
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+        }
+
+        .europe-bg {
+            background: linear-gradient(145deg, #3f51b5, #3949ab);
+        }
+
+        .asia-bg {
+            background: linear-gradient(145deg, #ff9800, #f57c00);
+        }
+
+        .americas-bg {
+            background: linear-gradient(145deg, #4caf50, #43a047);
+        }
+
+        .country-info {
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .country-flag-placeholder {
+            position: absolute;
+            top: -20px;
+            left: 15px;
+            width: 40px;
+            height: 28px;
+            background-color: #e9ecef;
+            border: 2px solid white;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .country-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        /* Process Timeline */
+        .process-timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+            .process-timeline::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 40px;
+                width: 2px;
+                background-color: #e9ecef;
+            }
+
+        .timeline-item {
+            position: relative;
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-left: 1rem;
+        }
+
+        .timeline-number {
+            width: 60px;
+            height: 60px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            z-index: 1;
+            box-shadow: 0 4px 8px rgba(0,123,255,0.2);
+            margin-right: 10px;
+        }
+
+        .timeline-content {
+            flex: 1;
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Quiz Preview */
+        .quiz-preview {
+            background-color: white;
+        }
+
+        .quiz-features {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .quiz-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+            .quiz-feature i {
+                font-size: 1.5rem;
+                margin-top: 0.25rem;
+            }
+
+        .quiz-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .quiz-header {
+            background-color: #007bff;
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quiz-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .quiz-badge {
+            background-color: #0056b3;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .quiz-body {
+            padding: 1.5rem;
+        }
+
+        .quiz-question {
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .question-number {
+            width: 30px;
+            height: 30px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .quiz-options {
+            margin-bottom: 1.5rem;
+        }
+
+        .option {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .option:hover {
+                background-color: #f8f9fa;
+            }
+
+            .option.correct {
+                border-color: #28a745;
+                background-color: rgba(40, 167, 69, 0.1);
+            }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quiz-progress {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            flex: 1;
+            margin: 0 1rem;
+        }
+
+        .progress {
+            width: 100%;
+            height: 8px;
+        }
+
+        /* Teacher Section */
+        .teachers-section {
+            background-color: #f8f9fa;
+        }
+
+        .teacher-features {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .teacher-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+            .teacher-feature i {
+                font-size: 1.5rem;
+                margin-top: 0.25rem;
+            }
+
+        .dashboard-preview {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .dashboard-header {
+            background-color: #28a745;
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dashboard-body {
+            padding: 1.5rem;
+        }
+
+        .dashboard-stat {
+            margin-bottom: 1rem;
+            text-align: center;
+            display: inline-block;
+            width: 33%;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .dashboard-chart {
+            margin-top: 1.5rem;
+        }
+
+        .chart-bars {
+            display: flex;
+            justify-content: space-between;
+            height: 100px;
+        }
+
+        .chart-bar {
+            width: 30px;
+            background-color: #28a745;
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+            .chart-bar span {
+                position: absolute;
+                bottom: -25px;
+                font-size: 0.8rem;
+                color: #6c757d;
+            }
+
+        .chart-label {
+            text-align: center;
+            margin-top: 30px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        /* CTA Sections */
+        .cta-section {
+            background: linear-gradient(145deg, #007bff, #0056b3);
+            padding: 4rem 0;
+        }
+
+        .logged-cta-section {
+            background-color: #f8f9fa;
+            padding: 4rem 0;
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Responsive Adjustments */
+        @@media (max-width: 991.98px) {
+            .timeline-content
+
+        {
+            padding: 1rem;
+        }
+
+        .dashboard-preview {
+            margin-top: 2rem;
+        }
+
+        }
+
+        @@media (max-width: 767.98px) {
+            .process-timeline::before
+
+        {
+            left: 30px;
+        }
+
+        .timeline-number {
+            width: 50px;
+            height: 50px;
+            font-size: 1.25rem;
+        }
+
+        .dashboard-stat {
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-bars {
+            height: 80px;
+        }
+
+        .chart-bar {
+            width: 20px;
+        }
+
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+
+        // Script per caricare le bandiere in modo sicuro
+        document.addEventListener('DOMContentLoaded', function() {
+            // Funzione per caricare una bandiera con gestione degli errori
+            function loadFlag(countryCode, elementId) {
+                if (!countryCode || !elementId) return;
+
+                const flagUrl = `https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`;
+                const img = new Image();
+
+                img.onload = function() {
+                    // La bandiera è stata caricata con successo
+                    const flagElement = document.getElementById(elementId);
+                    if (flagElement) {
+                        flagElement.innerHTML = '';
+                        flagElement.style.background = `url(${flagUrl}) center/cover no-repeat`;
+                        flagElement.style.color = 'transparent';
+                    }
+                };
+
+                img.onerror = function() {
+                    // Errore nel caricamento, lascia il fallback con il codice paese
+                    console.log(`Impossibile caricare la bandiera per ${countryCode}`);
+                };
+
+                img.src = flagUrl;
+            }
+
+            // Carica le bandiere per ogni paese
+            loadFlag('it', 'italy-flag');
+            loadFlag('jp', 'japan-flag');
+            loadFlag('br', 'brazil-flag');
+        });
+    </script>
+
+    @if (User.Identity?.IsAuthenticated ?? false)
+    {
+        <!-- Three.js solo per utenti autenticati - non necessario per ora -->
+    }
+}

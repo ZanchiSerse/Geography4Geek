@@ -1,0 +1,55 @@
+﻿@page
+@model Geography4Geek_1.Pages.FixRoleModel
+@{
+    ViewData["Title"] = "Fissa Ruolo";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Correzione Ruolo Utente</h4>
+                </div>
+                <div class="card-body">
+                    @if (ViewData.ContainsKey("Message"))
+                    {
+                        <div class="alert alert-success">
+                            @ViewData["Message"]
+                        </div>
+                    }
+
+                    <h5>Informazioni Utente Attuale:</h5>
+                    <ul class="list-group mb-4">
+                        <li class="list-group-item">
+                            <strong>Email:</strong> @Model.UserEmail
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Ruolo Attuale:</strong> @Model.CurrentRole
+                        </li>
+                        <li class="list-group-item">
+                            <strong>IsInRole("Teacher"):</strong> @User.IsInRole("Teacher")
+                        </li>
+                    </ul>
+
+                    <form method="post">
+                        <div class="form-group">
+                            <label>Seleziona Ruolo:</label>
+                            <select class="form-control" name="selectedRole">
+                                <option value="Teacher">Insegnante</option>
+                                <option value="Student">Studente</option>
+                                <option value="Administrator">Amministratore</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            Aggiorna Ruolo
+                        </button>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <a asp-page="/Index" class="btn btn-outline-secondary">Torna alla Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

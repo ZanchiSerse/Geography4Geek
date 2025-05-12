@@ -1,0 +1,325 @@
+﻿@page "{id}"
+@model Geography4Geek_1.Pages.Teacher.StudentDetailsModel
+@{
+    ViewData["Title"] = "Dettaglio Studente";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Dettaglio Studente</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-page="/Teacher/Dashboard">Dashboard</a></li>
+        <li class="breadcrumb-item"><a asp-page="/Teacher/QuizResults">Risultati Quiz</a></li>
+        <li class="breadcrumb-item active">Dettaglio Studente</li>
+    </ol>
+
+    <div class="row mb-4">
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-user me-1"></i>
+                    Informazioni Studente
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="student-avatar me-3">
+                            @{
+                                var initials = Model.Student.UserName.Substring(0, 1).ToUpper();
+                                if (Model.Student.UserName.Contains(" "))
+                                {
+                                    var parts = Model.Student.UserName.Split(' ');
+                                    if (parts.Length > 1 && !string.IsNullOrEmpty(parts[1]))
+                                    {
+                                        initials += parts[1].Substring(0, 1).ToUpper();
+                                    }
+                                }
+                            }
+                            <div class="avatar-circle">@initials</div>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">@Model.Student.UserName</h5>
+                            <p class="text-muted mb-0">@Model.Student.Email</p>
+                        </div>
+                    </div>
+
+                    <div class="student-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Quiz completati:</span>
+                            <span class="stat-value">@Model.Attempts.Count</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Punteggio medio:</span>
+                            <span class="stat-value">
+                                @(Model.Attempts.Any() ?
+                                    Model.AvgScore.ToString("0.0") + "%" :
+                                    "N/A")
+                            </span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Miglior punteggio:</span>
+                            <span class="stat-value">
+                                @(Model.Attempts.Any() ?
+                                    Model.BestScore.ToString("0.0") + "%" :
+                                    "N/A")
+                            </span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Ultimo quiz:</span>
+                            <span class="stat-value">
+                                @(Model.Attempts.Any() ?
+                                    Model.LastAttemptDate?.ToString("dd/MM/yyyy") :
+                                    "N/A")
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar me-1"></i>
+                    Statistiche per Paese
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="studentCountryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-history me-1"></i>
+            Storico Quiz Completati
+        </div>
+        <div class="card-body">
+            @if (Model.Attempts.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="studentHistoryTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Paese</th>
+                                <th>Difficoltà</th>
+                                <th>Data</th>
+                                <th>Durata</th>
+                                <th>Punteggio</th>
+                                <th>Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var attempt in Model.Attempts)
+                            {
+                                <tr>
+                                    <td>@attempt.CountryName</td>
+                                    <td>
+                                        @{
+                                            var difficultyClass = attempt.Difficulty.ToLower() switch
+                                            {
+                                                "easy" => "bg-success",
+                                                "medium" => "bg-warning",
+                                                "hard" => "bg-danger",
+                                                _ => "bg-secondary"
+                                            };
+                                        }
+                                        <span class="badge @difficultyClass">@attempt.Difficulty</span>
+                                    </td>
+                                    <td>@attempt.CompletedAt?.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>
+                                        @if (attempt.CompletedAt.HasValue)
+                                        {
+                                            var duration = attempt.CompletedAt.Value - attempt.StartedAt;
+                                            @($"{duration.Minutes}m {duration.Seconds}s")
+                                        }
+                                        else
+                                        {
+                                            <span class="text-warning">-</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @{
+                                            var scoreClass = attempt.ScorePercentage switch
+                                            {
+                                                >= 90 => "text-success",
+                                                >= 70 => "text-primary",
+                                                >= 50 => "text-warning",
+                                                _ => "text-danger"
+                                            };
+                                        }
+                                        <span class="@scoreClass fw-bold">
+                                            @attempt.Score/@attempt.TotalQuestions
+                                            (@attempt.ScorePercentage.ToString("0.0")%)
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a asp-page="/Teacher/AttemptDetails" asp-route-id="@attempt.Id"
+                                           class="btn btn-sm btn-primary">
+                                            <i class="fas fa-eye me-1"></i> Dettagli
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Questo studente non ha ancora completato nessun quiz.
+                </div>
+            }
+        </div>
+    </div>
+
+    @if (Model.MostFrequentMistakes.Any())
+    {
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-exclamation-triangle me-1"></i>
+                Errori Frequenti
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    Di seguito sono elencate le risposte errate più frequenti di questo studente:
+                </p>
+                <div class="list-group">
+                    @foreach (var mistake in Model.MostFrequentMistakes)
+                    {
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">@mistake.CategoryName</h5>
+                                <small>@mistake.ErrorCount errori</small>
+                            </div>
+                            <p class="mb-1">@mistake.Description</p>
+                            <small class="text-muted">
+                                Domande su: @string.Join(", ", mistake.RelatedTopics)
+                            </small>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Inizializza DataTable
+            const dataTable = document.getElementById('studentHistoryTable');
+            if (dataTable) {
+                new simpleDatatables.DataTable(dataTable);
+            }
+
+            // Prepara dati per il grafico
+            const countryData = @Html.Raw(Json.Serialize(Model.CountryChartData));
+            if (countryData.length > 0) {
+                // Grafico quiz per paese
+                const ctx = document.getElementById('studentCountryChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: countryData.map(item => item.country),
+                        datasets: [
+                            {
+                                label: 'Tentativi',
+                                data: countryData.map(item => item.count),
+                                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1,
+                                yAxisID: 'y'
+                            },
+                            {
+                                label: 'Punteggio Medio (%)',
+                                data: countryData.map(item => item.avgScore),
+                                backgroundColor: 'rgba(255, 99, 132, 0.7)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1,
+                                type: 'line',
+                                yAxisID: 'y1'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Numero di tentativi'
+                                },
+                                position: 'left',
+                                grid: {
+                                    display: false
+                                }
+                            },
+                            y1: {
+                                beginAtZero: true,
+                                max: 100,
+                                title: {
+                                    display: true,
+                                    text: 'Punteggio medio (%)'
+                                },
+                                position: 'right',
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+}
+
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+    <style>
+        .avatar-circle {
+            width: 60px;
+            height: 60px;
+            background-color: #0d6efd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .student-stats {
+            margin-top: 1rem;
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #6c757d;
+        }
+
+        .stat-value {
+            font-weight: 500;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+    </style>
+}
