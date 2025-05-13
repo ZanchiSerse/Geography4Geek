@@ -5,50 +5,62 @@
     ViewData["Title"] = "Login";
 }
 
-<h2>Accedi</h2>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h3 class="mb-0"><i class="fas fa-globe-americas me-2"></i>Accedi a Geography4Geek</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form id="loginForm" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
-<div class="row">
-    <div class="col-md-4">
-        <form id="loginForm" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group mb-3">
-                <label asp-for="Input.Email" class="control-label">Email</label>
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="Input.Password" class="control-label">Password</label>
-                <input asp-for="Input.Password" class="form-control" type="password" autocomplete="current-password" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="Input.Role" class="control-label">Ruolo</label>
-                <select asp-for="Input.Role" class="form-control" asp-items="Html.GetEnumSelectList<UserRole>()">
-                    <option value="">Seleziona un ruolo</option>
-                </select>
-                <span asp-validation-for="Input.Role" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <div class="checkbox">
-                    <label asp-for="Input.RememberMe">
-                        <input asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Email" class="form-control" autocomplete="username" placeholder="Email" required />
+                            <label asp-for="Input.Email"><i class="fas fa-envelope me-2"></i>Email</label>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Password" class="form-control" type="password" autocomplete="current-password" placeholder="Password" required />
+                            <label asp-for="Input.Password"><i class="fas fa-lock me-2"></i>Password</label>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input asp-for="Input.RememberMe" class="form-check-input" type="checkbox" />
+                            <label class="form-check-label" asp-for="Input.RememberMe">
+                                Ricordami
+                            </label>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg text-white">
+                                <i class="fas fa-sign-in-alt me-2"></i>Accedi
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3 bg-light">
+                    <div class="small mb-2">Non hai un account?</div>
+                    <a href="/Account/Register" class="btn btn-success">
+                        <i class="fas fa-user-plus me-2"></i>Crea un nuovo account
+                    </a>
                 </div>
             </div>
-            <div class="form-group mb-3">
-                <button type="submit" class="btn btn-primary">Accedi</button>
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div class="mt-4">
-    <p>Non hai un account?</p>
-    <!-- Pulsante di registrazione HTML diretto -->
-    <a href="/Account/Register" class="btn btn-success">Crea un nuovo account</a>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Aggiungi l'animazione al pulsante di login
+        document.getElementById('loginForm').addEventListener('submit', function() {
+            const button = this.querySelector('button[type="submit"]');
+            button.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Accesso in corso...';
+            button.disabled = true;
+        });
+    </script>
 }

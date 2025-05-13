@@ -4,28 +4,212 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Geography4Geek</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="~/favicon.png">
 
     @RenderSection("Styles", required: false)
+
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --info: #1abc9c;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        h1, h2, h3, h4, h5, h6, .navbar-brand {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+
+        /* Navbar styling */
+        .navbar {
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), #4a69bd);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white !important;
+            letter-spacing: 0.5px;
+        }
+
+            .navbar-brand i {
+                color: #fff;
+                font-size: 1.8rem;
+                margin-right: 10px;
+                vertical-align: middle;
+            }
+
+        .nav-link {
+            color: rgba(255,255,255,0.9) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+            .nav-link:hover {
+                background-color: rgba(255,255,255,0.2);
+                transform: translateY(-2px);
+            }
+
+            .nav-link i {
+                margin-right: 6px;
+            }
+
+        /* Main content container */
+        main {
+            min-height: calc(100vh - 180px);
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+
+            footer a {
+                color: var(--light);
+                text-decoration: none;
+            }
+
+                footer a:hover {
+                    color: var(--primary);
+                    text-decoration: none;
+                }
+
+        /* Card styling */
+        .card {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            }
+
+        /* Button styling */
+        .btn {
+            border-radius: 5px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+            .btn-primary:hover {
+                background-color: #2980b9;
+                border-color: #2980b9;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+
+        .btn-success {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+        }
+
+            .btn-success:hover {
+                background-color: #27ae60;
+                border-color: #27ae60;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+
+        /* User account dropdown */
+        .dropdown-menu {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .dropdown-item {
+            padding: 0.6rem 1.2rem;
+            font-weight: 500;
+        }
+
+            .dropdown-item:hover {
+                background-color: #f1f5f9;
+            }
+
+        /* Mobile menu */
+        @@media (max-width: 991.98px) {
+            .navbar-collapse
+
+        {
+            background-color: rgba(52, 152, 219, 0.98);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        }</style>
 </head>
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">
-                    <i class="fas fa-globe-europe text-primary mr-2"></i>Geography4Geek
+                    <i class="fas fa-globe-europe"></i> Geography4Geek
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-page="/Index">
+                                <i class="fas fa-home"></i> Home
+                            </a>
                         </li>
 
                         @if (User.Identity?.IsAuthenticated == true)
@@ -34,67 +218,77 @@
                             @if (User.IsInRole("Teacher"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-page="/DiagnosticPage">
-                                        <i class="fas fa-stethoscope mr-1"></i>Diagnostica
+                                    <a class="nav-link" asp-page="/DiagnosticPage">
+                                        <i class="fas fa-stethoscope"></i> Diagnostica
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" asp-page="/Teacher/Dashboard">
-                                        <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                                        <i class="fas fa-tachometer-alt"></i> Dashboard
                                     </a>
                                 </li>
                             }
-                            @if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="StudentResults" asp-action="Dashboard">Dashboard</a>
-                                </li>
-                            }
-                            @if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-page="/Teacher/Dashboard">Dashboard</a>
-                                </li>
-                            }
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-page="/Teacher/Dashboard">Dashboard</a>
-                            </li>
+
                             <!-- Pagina del globo - accessibile a tutti gli utenti autenticati -->
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-page="/Globe/Index">
-                                    <i class="fas fa-globe-americas mr-1"></i>Mappa
+                                <a class="nav-link" asp-page="/Globe/Index">
+                                    <i class="fas fa-globe-americas"></i> Mappa
                                 </a>
                             </li>
                         }
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
                     </ul>
-                    <partial name="_LoginPartial" />
+                    <div class="d-flex">
+                        <partial name="_LoginPartial" />
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
 
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer">
         <div class="container">
-            &copy; 2025 - Geography4Geek - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-globe-europe me-2"></i> Geography4Geek</h5>
+                    <p class="mb-0">Esplora il mondo, impara la geografia, divertiti con noi.</p>
+                    <p class="mb-3">&copy; @DateTime.Now.Year - Tutti i diritti riservati</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Collegamenti Rapidi</h5>
+                    <ul class="list-unstyled">
+                        <li><a asp-page="/Index"><i class="fas fa-angle-right me-2"></i>Home</a></li>
+                        <li><a asp-page="/Privacy"><i class="fas fa-angle-right me-2"></i>Privacy</a></li>
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <li><a asp-page="/Globe/Index"><i class="fas fa-angle-right me-2"></i>Mappa</a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Social Media</h5>
+                    <div class="d-flex mt-3">
+                        <a href="#" class="me-3" title="Facebook"><i class="fab fa-facebook-square fa-2x"></i></a>
+                        <a href="#" class="me-3" title="Twitter"><i class="fab fa-twitter-square fa-2x"></i></a>
+                        <a href="#" class="me-3" title="Instagram"><i class="fab fa-instagram-square fa-2x"></i></a>
+                        <a href="#" title="YouTube"><i class="fab fa-youtube-square fa-2x"></i></a>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
 
-    <!-- jQuery (necessario per Bootstrap 4) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Popper.js e Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+    <!-- jQuery (opzionale con Bootstrap 5) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Script personalizzato -->
     <script src="~/js/site.js" asp-append-version="true"></script>

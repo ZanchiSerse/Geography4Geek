@@ -31,7 +31,7 @@
                     <div id="country-info">
                         <p>Select a country on the globe to view information.</p>
                     </div>
-                 
+
                 </div>
             </div>
         </div>
@@ -48,15 +48,15 @@
             </div>
             <div class="modal-body" id="countryInfoModalBody"></div>
             <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="startQuizButton">
-                        <i class="fas fa-question-circle me-2"></i>Start Quiz
-                    </button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-               
-        </div>
+                <button type="button" class="btn btn-primary" id="startQuizButton">
+                    <i class="fas fa-question-circle me-2"></i>Start Quiz
+                </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 
+            </div>
+
+        </div>
     </div>
-</div>
 </div>
 
 @section Styles {
@@ -141,18 +141,18 @@
             z-index: 1000;
         }
 
-            #startQuizButton {
-                background-color: #28a745;
-                border-color: #28a745;
-                transition: all 0.3s ease;
-            }
+        #startQuizButton {
+            background-color: #28a745;
+            border-color: #28a745;
+            transition: all 0.3s ease;
+        }
 
-                #startQuizButton:hover {
-                    background-color: #218838;
-                    border-color: #1e7e34;
-                    transform: translateY(-2px);
-                    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                }
+            #startQuizButton:hover {
+                background-color: #218838;
+                border-color: #1e7e34;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
         /* Media query per layout responsive - SINTASSI CORRETTA PER RAZOR */
         @@media (max-width: 768px) {
             .custom-controls-container {
@@ -171,7 +171,8 @@
             }
         }
     </style>
-}
+}    
+
 
     @section Scripts {
         <script src="https://cesium.com/downloads/cesiumjs/releases/1.70/Build/Cesium/Cesium.js"></script>
@@ -777,7 +778,36 @@
                     </button>
                 `;
             }
-        async function getCountryInfoFromGemini(countryName) {
+        // async function getCountryInfoFromGemini(countryName) {
+        //     try {
+        //         console.log(`Recupero informazioni per: ${countryName}`);
+
+        //         // Aggiungi un parametro timestamp per evitare il caching del browser
+        //         const timestamp = new Date().getTime();
+        //         const response = await fetch(`/api/GeminiProxy/countryinfo?countryName=${encodeURIComponent(countryName)}&_=${timestamp}`);
+
+        //         if (!response.ok) {
+        //             console.warn(`API ha risposto con stato ${response.status}`);
+        //             throw new Error(`Errore API: ${response.status}`);
+        //         }
+
+        //         // Controlla il Content-Type della risposta
+        //         const contentType = response.headers.get('content-type');
+
+        //         if (contentType && contentType.includes('application/json')) {
+        //             // Se è JSON, parsa come JSON
+        //             return await response.json();
+        //         } else {
+        //             // Se è HTML o altro formato, prendi il testo grezzo
+        //             console.log("Risposta non-JSON ricevuta, elaborazione come testo");
+        //             return await response.text();
+        //         }
+        //     } catch (error) {
+        //         console.error("Errore durante la chiamata API:", error);
+        //         throw error;
+        //     }
+        // }
+                 d async function getCountryInfoFromGemini(countryName) {
             try {
                 console.log(`Recupero informazioni per: ${countryName}`);
 
@@ -806,6 +836,7 @@
                 throw error;
             }
         }
+
 
                 window.showFullInfo = async function (country) {
             if (!country) return;

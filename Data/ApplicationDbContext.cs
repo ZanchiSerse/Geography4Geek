@@ -16,6 +16,7 @@ namespace Geography4Geek_1.Data
         public DbSet<QuizAttempt> QuizAttempts { get; set; } = null!;
         public DbSet<QuizAnswer> QuizAnswers { get; set; } = null!;
         public DbSet<QuizQuestion> QuizQuestions { get; set; } = null!;
+        public DbSet<QuizResult> QuizResults { get; set; } = null!; // Aggiungiamo QuizResults
 
         // Nel metodo OnModelCreating
         protected override void OnModelCreating(ModelBuilder builder)
@@ -52,6 +53,19 @@ namespace Geography4Geek_1.Data
                 .Property(q => q.CountryCode)
                 .HasColumnType("TEXT")
                 .IsRequired(false);  // Reso opzionale per compatibilità con dati esistenti
+
+            // Configura la relazione per QuizResult
+            builder.Entity<QuizResult>()
+                .HasOne(r => r.User)
+                .WithMany()
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<QuizResult>()
+                .HasOne(r => r.Quiz)
+                .WithMany()
+                .HasForeignKey(r => r.QuizId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

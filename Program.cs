@@ -58,9 +58,11 @@ builder.Services.AddControllers();
 // Aggiungi questo dopo builder.Services.AddRazorPages()
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("TeacherOnly", policy => policy.RequireRole("Teacher"));
+    options.AddPolicy("TeacherOnly", policy => policy.RequireRole(UserRole.Teacher.ToString()));
+    // Aggiungi altre policy se necessario
+    options.AddPolicy("StudentOnly", policy => policy.RequireRole(UserRole.Student.ToString()));
+    options.AddPolicy("FreeUserOnly", policy => policy.RequireRole(UserRole.FreeUser.ToString()));
 });
-
 // Configura le Razor Pages per utilizzare l'autorizzazione
 builder.Services.AddRazorPages(options =>
 {
@@ -92,6 +94,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 app.MapControllers();
+app.UseMiddleware<Geography4Geek_1.Middleware.RoleSyncMiddleware>();
 
 // Middleware per ridirezionare a login se non autenticato
 app.Use(async (context, next) =>
@@ -111,15 +114,21 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
+        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-        // Crea il database se non esiste
-      //  bool created = context.Database.EnsureCreated();
-
-      //  Console.WriteLine($"Database creato? {created}");
-        Console.WriteLine($"Connessione aperta e funzionante");
+        // Assicurati che i ruoli esistano
+        string[] roleNames = Enum.GetNames(typeof(UserRole));
+        foreach (var roleName in roleNames)
+        {
+            if (!await roleManager.RoleExistsAsync(roleName))
+            {
+                await roleManager.CreateAsync(new IdentityRole(roleName));
+                Console.WriteLine($"Ruolo {roleName} creato con successo");
+            }
+        }
 
         // Crea un utente admin se non esiste già
-        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
         if (!context.Users.Any())
         {
             var adminUser = new ApplicationUser
@@ -136,7 +145,9 @@ using (var scope = app.Services.CreateScope())
             var result = await userManager.CreateAsync(adminUser, "Admin123!");
             if (result.Succeeded)
             {
-                Console.WriteLine("Utente admin creato con successo");
+                // Assegna il ruolo all'utente
+                await userManager.AddToRoleAsync(adminUser, UserRole.Teacher.ToString());
+                Console.WriteLine("Utente admin creato con successo e ruolo assegnato");
             }
             else
             {

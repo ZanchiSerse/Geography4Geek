@@ -8,14 +8,14 @@
 <section class="hero-section py-5">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <h1 class="display-4 fw-bold text-primary mb-3">Esplora il Mondo con Geography4Geek</h1>
+            <div class="col-lg-6 mb-4 mb-lg-0 fade-in-up" data-aos="fade-up">
+                <h1 class="display-4 fw-bold mb-3">Esplora il Mondo con <span class="text-gradient">Geography4Geek</span></h1>
                 <p class="lead mb-4">Una piattaforma educativa interattiva che unisce l'esplorazione geografica al divertimento dei quiz. Naviga sul nostro globo 3D, scopri informazioni dettagliate sui paesi e metti alla prova le tue conoscenze!</p>
 
                 @if (!User.Identity?.IsAuthenticated ?? true)
                 {
                     <div class="cta-buttons">
-                        <a href="/Account/Register" class="btn btn-primary btn-lg me-3 px-4 py-2 shadow-sm">
+                        <a href="/Account/Register" class="btn btn-primary btn-lg me-3 px-4 py-2 shadow">
                             <i class="fas fa-user-plus me-2"></i>Registrati Ora
                         </a>
                         <a href="/Account/Login" class="btn btn-outline-primary btn-lg px-4 py-2">
@@ -26,26 +26,31 @@
                 else
                 {
                     <div class="cta-buttons">
-                        <a href="/Globe/Index" class="btn btn-primary btn-lg me-3 px-4 py-2 shadow-sm">
+                        <a href="/Globe/Index" class="btn btn-primary btn-lg me-3 px-4 py-2 shadow">
                             <i class="fas fa-globe-americas me-2"></i>Esplora il Globo
                         </a>
                     </div>
                 }
             </div>
-            <div class="col-lg-6">
-                <!-- Globo animato con CSS -->
-                <div class="globe-animation-container">
-                    <div class="globe-illustration">
-                        <i class="fas fa-globe-americas"></i>
-                    </div>
-                    <div class="floating-item floating-pin1">
-                        <i class="fas fa-map-pin"></i>
-                    </div>
-                    <div class="floating-item floating-pin2">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <div class="floating-item floating-quiz">
-                        <i class="fas fa-question-circle"></i>
+            <div class="col-lg-6 fade-in-up" data-aos="fade-up" data-aos-delay="200">
+                <div class="globe-container">
+                    <div class="globe-wrapper">
+                        <div class="globe">
+                            <div class="globe-sphere">
+                                <i class="fas fa-globe-americas"></i>
+                            </div>
+                            <div class="globe-ring"></div>
+                            <div class="globe-ring globe-ring-2"></div>
+                        </div>
+                        <div class="floating-element marker-1">
+                            <i class="fas fa-map-marker-alt pulse"></i>
+                        </div>
+                        <div class="floating-element marker-2">
+                            <i class="fas fa-search pulse"></i>
+                        </div>
+                        <div class="floating-element marker-3">
+                            <i class="fas fa-question-circle pulse"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -53,33 +58,63 @@
     </div>
 </section>
 
-<!-- Features Section -->
-<section class="features-section py-5 bg-light">
+<!-- Stats Section -->
+<section class="stats-section py-4">
     <div class="container">
-        <h2 class="text-center mb-5">Caratteristiche Principali</h2>
+        <div class="row justify-content-center text-center">
+            <div class="col-md-4 col-lg-3 mb-3 mb-md-0 stat-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="stat-value"><span class="counter">195</span>+</div>
+                <div class="stat-label">Paesi nel Mondo</div>
+            </div>
+            <div class="col-md-4 col-lg-3 mb-3 mb-md-0 stat-item" data-aos="fade-up" data-aos-delay="200">
+                <div class="stat-value"><span class="counter">500</span>+</div>
+                <div class="stat-label">Quiz Disponibili</div>
+            </div>
+            <div class="col-md-4 col-lg-3 stat-item" data-aos="fade-up" data-aos-delay="300">
+                <div class="stat-value"><span class="counter">10000</span>+</div>
+                <div class="stat-label">Studenti Attivi</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5">
+    <div class="container">
+        <div class="section-header text-center mb-5" data-aos="fade-up">
+            <span class="section-subtitle">Perché Sceglierci</span>
+            <h2 class="section-title">Caratteristiche Principali</h2>
+            <div class="section-divider"></div>
+        </div>
         <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="feature-card shadow-sm h-100">
-                    <div class="feature-icon">
-                        <i class="fas fa-globe-americas"></i>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <div class="feature-icon">
+                            <i class="fas fa-globe-americas"></i>
+                        </div>
                     </div>
                     <h3>Globo 3D Interattivo</h3>
                     <p>Esplora il mondo con un globo tridimensionale completamente interattivo. Ruota, zoom e seleziona qualsiasi paese con un semplice click.</p>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="feature-card shadow-sm h-100">
-                    <div class="feature-icon">
-                        <i class="fas fa-book-open"></i>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <div class="feature-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
                     </div>
                     <h3>Informazioni Dettagliate</h3>
                     <p>Accedi a informazioni complete e aggiornate su ogni paese: geografia, storia, cultura, economia e curiosità interessanti.</p>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="feature-card shadow-sm h-100">
-                    <div class="feature-icon">
-                        <i class="fas fa-question-circle"></i>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <div class="feature-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
                     </div>
                     <h3>Quiz Personalizzati</h3>
                     <p>Metti alla prova le tue conoscenze con quiz generati dinamicamente in base al paese selezionato. Scegli la difficoltà e il numero di domande.</p>
@@ -92,56 +127,75 @@
 <!-- Country Exploration -->
 <section class="countries-section py-5">
     <div class="container">
-        <h2 class="text-center mb-5">Esplora Paesi da Tutto il Mondo</h2>
+        <div class="section-header text-center mb-5" data-aos="fade-up">
+            <span class="section-subtitle">Destinazioni</span>
+            <h2 class="section-title">Esplora Paesi da Tutto il Mondo</h2>
+            <div class="section-divider"></div>
+        </div>
         <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="country-card shadow h-100">
-                    <div class="country-icon europe-bg">
-                        <i class="fas fa-monument"></i>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="country-card">
+                    <div class="country-image europe-bg">
+                        <div class="country-icon">
+                            <i class="fas fa-monument"></i>
+                        </div>
+                        <div class="country-flag" id="italy-flag" style="background-image: url('https://flagcdn.com/w80/it.png')"></div>
                     </div>
                     <div class="country-info">
-                        <div class="country-flag-placeholder" id="italy-flag">IT</div>
                         <h4>Italia</h4>
                         <p>Storia millenaria, arte rinascimentale, e paesaggi mozzafiato dalle Alpi alla Sicilia.</p>
                         <div class="country-tags">
-                            <span class="badge bg-light text-dark">Europa</span>
-                            <span class="badge bg-light text-dark">Storia</span>
-                            <span class="badge bg-light text-dark">Arte</span>
+                            <span class="badge">Europa</span>
+                            <span class="badge">Storia</span>
+                            <span class="badge">Arte</span>
                         </div>
+                    </div>
+                    <div class="country-footer">
+                        <a href="#" class="btn-explore">Esplora <i class="fas fa-arrow-right ms-1"></i></a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="country-card shadow h-100">
-                    <div class="country-icon asia-bg">
-                        <i class="fas fa-torii-gate"></i>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="country-card">
+                    <div class="country-image asia-bg">
+                        <div class="country-icon">
+                            <i class="fas fa-torii-gate"></i>
+                        </div>
+                        <div class="country-flag" id="japan-flag" style="background-image: url('https://flagcdn.com/w80/jp.png')"></div>
                     </div>
                     <div class="country-info">
-                        <div class="country-flag-placeholder" id="japan-flag">JP</div>
                         <h4>Giappone</h4>
-                        <p>Tradizione e innovazione si fondono in questo affascinante paese asiatico.</p>
+                        <p>Tradizione e innovazione si fondono in questo affascinante paese asiatico ricco di cultura.</p>
                         <div class="country-tags">
-                            <span class="badge bg-light text-dark">Asia</span>
-                            <span class="badge bg-light text-dark">Tecnologia</span>
-                            <span class="badge bg-light text-dark">Cultura</span>
+                            <span class="badge">Asia</span>
+                            <span class="badge">Tecnologia</span>
+                            <span class="badge">Cultura</span>
                         </div>
+                    </div>
+                    <div class="country-footer">
+                        <a href="#" class="btn-explore">Esplora <i class="fas fa-arrow-right ms-1"></i></a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="country-card shadow h-100">
-                    <div class="country-icon americas-bg">
-                        <i class="fas fa-futbol"></i>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="country-card">
+                    <div class="country-image americas-bg">
+                        <div class="country-icon">
+                            <i class="fas fa-futbol"></i>
+                        </div>
+                        <div class="country-flag" id="brazil-flag" style="background-image: url('https://flagcdn.com/w80/br.png')"></div>
                     </div>
                     <div class="country-info">
-                        <div class="country-flag-placeholder" id="brazil-flag">BR</div>
                         <h4>Brasile</h4>
                         <p>Foreste pluviali, spiagge tropicali e una vibrante cultura in Sudamerica.</p>
                         <div class="country-tags">
-                            <span class="badge bg-light text-dark">Sudamerica</span>
-                            <span class="badge bg-light text-dark">Natura</span>
-                            <span class="badge bg-light text-dark">Musica</span>
+                            <span class="badge">Sudamerica</span>
+                            <span class="badge">Natura</span>
+                            <span class="badge">Musica</span>
                         </div>
+                    </div>
+                    <div class="country-footer">
+                        <a href="#" class="btn-explore">Esplora <i class="fas fa-arrow-right ms-1"></i></a>
                     </div>
                 </div>
             </div>
@@ -150,43 +204,82 @@
 </section>
 
 <!-- How it Works -->
-<section class="how-it-works py-5 bg-light">
+<section class="how-it-works py-5">
     <div class="container">
-        <h2 class="text-center mb-5">Come Funziona</h2>
-        <div class="process-timeline">
-            <div class="timeline-item">
-                <div class="timeline-number">1</div>
+        <div class="section-header text-center mb-5" data-aos="fade-up">
+            <span class="section-subtitle">Processo</span>
+            <h2 class="section-title">Come Funziona</h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="timeline-dot">
+                    <span>1</span>
+                </div>
                 <div class="timeline-content">
-                    <h4><i class="fas fa-sign-in-alt text-primary me-2"></i>Registrati o Accedi</h4>
-                    <p>Crea un account gratuito per accedere a tutte le funzionalità della piattaforma. Gli insegnanti ottengono strumenti aggiuntivi per monitorare i progressi degli studenti.</p>
+                    <div class="timeline-icon">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </div>
+                    <div class="timeline-text">
+                        <h4>Registrati o Accedi</h4>
+                        <p>Crea un account gratuito per accedere a tutte le funzionalità della piattaforma. Gli insegnanti ottengono strumenti aggiuntivi per monitorare i progressi degli studenti.</p>
+                    </div>
                 </div>
             </div>
-            <div class="timeline-item">
-                <div class="timeline-number">2</div>
+            <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
+                <div class="timeline-dot">
+                    <span>2</span>
+                </div>
                 <div class="timeline-content">
-                    <h4><i class="fas fa-globe-americas text-primary me-2"></i>Naviga il Globo 3D</h4>
-                    <p>Usa il nostro globo interattivo per esplorare il mondo. Ruota, zooma e clicca su qualsiasi paese per selezionarlo.</p>
+                    <div class="timeline-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <div class="timeline-text">
+                        <h4>Naviga il Globo 3D</h4>
+                        <p>Usa il nostro globo interattivo per esplorare il mondo. Ruota, zooma e clicca su qualsiasi paese per selezionarlo e scoprire informazioni dettagliate.</p>
+                    </div>
                 </div>
             </div>
-            <div class="timeline-item">
-                <div class="timeline-number">3</div>
+            <div class="timeline-item" data-aos="fade-up" data-aos-delay="300">
+                <div class="timeline-dot">
+                    <span>3</span>
+                </div>
                 <div class="timeline-content">
-                    <h4><i class="fas fa-book-open text-primary me-2"></i>Scopri Informazioni</h4>
-                    <p>Accedi a dati completi sul paese selezionato: geografia, storia, popolazione, economia e curiosità.</p>
+                    <div class="timeline-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div class="timeline-text">
+                        <h4>Scopri Informazioni</h4>
+                        <p>Accedi a dati completi sul paese selezionato: geografia, storia, popolazione, economia e curiosità, il tutto accompagnato da immagini e grafici.</p>
+                    </div>
                 </div>
             </div>
-            <div class="timeline-item">
-                <div class="timeline-number">4</div>
+            <div class="timeline-item" data-aos="fade-up" data-aos-delay="400">
+                <div class="timeline-dot">
+                    <span>4</span>
+                </div>
                 <div class="timeline-content">
-                    <h4><i class="fas fa-question-circle text-primary me-2"></i>Genera Quiz</h4>
-                    <p>Crea quiz personalizzati sul paese che stai esplorando. Scegli il numero di domande e il livello di difficoltà.</p>
+                    <div class="timeline-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <div class="timeline-text">
+                        <h4>Genera Quiz</h4>
+                        <p>Crea quiz personalizzati sul paese che stai esplorando. Scegli il numero di domande e il livello di difficoltà per una sfida su misura.</p>
+                    </div>
                 </div>
             </div>
-            <div class="timeline-item">
-                <div class="timeline-number">5</div>
+            <div class="timeline-item" data-aos="fade-up" data-aos-delay="500">
+                <div class="timeline-dot">
+                    <span>5</span>
+                </div>
                 <div class="timeline-content">
-                    <h4><i class="fas fa-chart-line text-primary me-2"></i>Monitora i Progressi</h4>
-                    <p>Visualizza i tuoi risultati e monitora i tuoi miglioramenti nel tempo. Gli insegnanti possono accedere a statistiche dettagliate sugli studenti.</p>
+                    <div class="timeline-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="timeline-text">
+                        <h4>Monitora i Progressi</h4>
+                        <p>Visualizza i tuoi risultati e monitora i tuoi miglioramenti nel tempo. Gli insegnanti possono accedere a statistiche dettagliate sugli studenti.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -194,46 +287,59 @@
 </section>
 
 <!-- Quiz Preview -->
-<section class="quiz-preview py-5">
+<section class="quiz-preview-section py-5">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <h2 class="mb-4">Quiz Interattivi e Personalizzati</h2>
-                <p class="lead">Metti alla prova le tue conoscenze con quiz generati automaticamente in base alle informazioni del paese selezionato.</p>
+            <div class="col-lg-5 mb-4 mb-lg-0" data-aos="fade-up">
+                <div class="section-header mb-4">
+                    <span class="section-subtitle">Test Le Tue Conoscenze</span>
+                    <h2 class="section-title">Quiz Interattivi e Personalizzati</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <p class="lead mb-4">Metti alla prova le tue conoscenze con quiz generati automaticamente in base alle informazioni del paese selezionato.</p>
 
-                <div class="quiz-features mt-4">
+                <div class="quiz-features">
                     <div class="quiz-feature">
-                        <i class="fas fa-sliders-h text-primary"></i>
-                        <div>
+                        <div class="quiz-feature-icon">
+                            <i class="fas fa-sliders-h"></i>
+                        </div>
+                        <div class="quiz-feature-text">
                             <h5>Livelli di Difficoltà</h5>
                             <p>Scegli tra facile, medio e difficile in base alla tua preparazione.</p>
                         </div>
                     </div>
                     <div class="quiz-feature">
-                        <i class="fas fa-list-ol text-primary"></i>
-                        <div>
+                        <div class="quiz-feature-icon">
+                            <i class="fas fa-list-ol"></i>
+                        </div>
+                        <div class="quiz-feature-text">
                             <h5>Numero di Domande</h5>
                             <p>Personalizza la lunghezza del quiz: 5, 10, 15 o 20 domande.</p>
                         </div>
                     </div>
                     <div class="quiz-feature">
-                        <i class="fas fa-brain text-primary"></i>
-                        <div>
+                        <div class="quiz-feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="quiz-feature-text">
                             <h5>Domande Intelligenti</h5>
                             <p>Domande generate dinamicamente dalle informazioni più recenti.</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="quiz-card shadow">
-                    <div class="quiz-header">
-                        <span class="quiz-title">Quiz sull'Italia</span>
-                        <span class="quiz-badge">Medio</span>
+            <div class="col-lg-7" data-aos="fade-up" data-aos-delay="200">
+                <div class="quiz-interface-card">
+                    <div class="quiz-interface-header">
+                        <div class="d-flex align-items-center">
+                            <div class="country-flag-small" style="background-image: url('https://flagcdn.com/w40/it.png')"></div>
+                            <span class="quiz-title">Quiz sull'Italia</span>
+                        </div>
+                        <div class="quiz-badge">Medio</div>
                     </div>
-                    <div class="quiz-body">
+                    <div class="quiz-interface-body">
                         <div class="quiz-question">
-                            <span class="question-number">1</span>
+                            <div class="question-number">1</div>
                             <p>Qual è la capitale dell'Italia?</p>
                         </div>
                         <div class="quiz-options">
@@ -244,6 +350,9 @@
                             <div class="option correct">
                                 <input type="radio" id="answer2" name="question1" checked>
                                 <label for="answer2">Roma</label>
+                                <div class="correct-indicator">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
                             </div>
                             <div class="option">
                                 <input type="radio" id="answer3" name="question1">
@@ -255,14 +364,18 @@
                             </div>
                         </div>
                         <div class="quiz-navigation">
-                            <button class="btn btn-outline-secondary btn-sm disabled">Precedente</button>
+                            <button class="btn btn-outline-secondary disabled">
+                                <i class="fas fa-arrow-left me-1"></i> Precedente
+                            </button>
                             <div class="quiz-progress">
                                 <div class="progress">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 10%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar" role="progressbar" style="width: 10%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                                 <span>1/10</span>
                             </div>
-                            <button class="btn btn-primary btn-sm">Successiva</button>
+                            <button class="btn btn-primary">
+                                Successiva <i class="fas fa-arrow-right ms-1"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -272,33 +385,43 @@
 </section>
 
 <!-- For Teachers -->
-<section class="teachers-section py-5 bg-light">
+<section class="teachers-section py-5">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
-                <h2 class="mb-4">Strumenti per Insegnanti</h2>
-                <p class="lead">Geography4Geek offre funzionalità speciali per gli educatori che desiderano integrare la geografia nel curriculum.</p>
+            <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0" data-aos="fade-up" data-aos-delay="200">
+                <div class="section-header mb-4">
+                    <span class="section-subtitle">Per Educatori</span>
+                    <h2 class="section-title">Strumenti per Insegnanti</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <p class="lead mb-4">Geography4Geek offre funzionalità speciali per gli educatori che desiderano integrare la geografia nel curriculum in modo interattivo.</p>
 
-                <div class="teacher-features mt-4">
+                <div class="teacher-features">
                     <div class="teacher-feature">
-                        <i class="fas fa-chart-bar text-success"></i>
+                        <div class="teacher-feature-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
                         <div>
                             <h5>Dashboard Analitica</h5>
-                            <p>Monitora i progressi degli studenti con grafici dettagliati e statistiche.</p>
+                            <p>Monitora i progressi degli studenti con grafici dettagliati e statistiche in tempo reale.</p>
                         </div>
                     </div>
                     <div class="teacher-feature">
-                        <i class="fas fa-users text-success"></i>
+                        <div class="teacher-feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
                         <div>
                             <h5>Gestione Studenti</h5>
-                            <p>Visualizza i risultati individuali e identifica aree di miglioramento.</p>
+                            <p>Visualizza i risultati individuali e identifica aree di miglioramento per ogni studente.</p>
                         </div>
                     </div>
                     <div class="teacher-feature">
-                        <i class="fas fa-tasks text-success"></i>
+                        <div class="teacher-feature-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
                         <div>
                             <h5>Risultati Quiz</h5>
-                            <p>Analizza le prestazioni per argomento e difficoltà.</p>
+                            <p>Analizza le prestazioni per argomento e difficoltà con report dettagliati.</p>
                         </div>
                     </div>
                 </div>
@@ -306,7 +429,7 @@
                 @if (User.Identity?.IsAuthenticated ?? false && User.IsInRole("Teacher"))
                 {
                     <div class="mt-4">
-                        <a href="/Teacher/Dashboard" class="btn btn-success">
+                        <a href="/Teacher/Dashboard" class="btn btn-success btn-lg">
                             <i class="fas fa-chart-bar me-2"></i>Accedi alla Dashboard
                         </a>
                     </div>
@@ -314,40 +437,68 @@
                 else if (!(User.Identity?.IsAuthenticated ?? false))
                 {
                     <div class="mt-4">
-                        <a href="/Account/Register" class="btn btn-outline-success">
+                        <a href="/Account/Register" class="btn btn-outline-success btn-lg">
                             <i class="fas fa-chalkboard-teacher me-2"></i>Registrati come Insegnante
                         </a>
                     </div>
                 }
             </div>
-            <div class="col-lg-6 order-lg-1">
-                <div class="dashboard-preview shadow">
+            <div class="col-lg-6 order-lg-1" data-aos="fade-up">
+                <div class="dashboard-preview">
                     <div class="dashboard-header">
-                        <i class="fas fa-chart-bar"></i>
+                        <i class="fas fa-chart-bar me-2"></i>
                         <span>Dashboard Insegnante</span>
                     </div>
                     <div class="dashboard-body">
-                        <div class="dashboard-stat">
-                            <div class="stat-value">15</div>
-                            <div class="stat-label">Studenti Attivi</div>
-                        </div>
-                        <div class="dashboard-stat">
-                            <div class="stat-value">78</div>
-                            <div class="stat-label">Quiz Completati</div>
-                        </div>
-                        <div class="dashboard-stat">
-                            <div class="stat-value">72%</div>
-                            <div class="stat-label">Punteggio Medio</div>
+                        <div class="dashboard-stats">
+                            <div class="dashboard-stat">
+                                <div class="stat-icon">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-value counter">15</div>
+                                    <div class="stat-label">Studenti Attivi</div>
+                                </div>
+                            </div>
+                            <div class="dashboard-stat">
+                                <div class="stat-icon">
+                                    <i class="fas fa-clipboard-check"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-value counter">78</div>
+                                    <div class="stat-label">Quiz Completati</div>
+                                </div>
+                            </div>
+                            <div class="dashboard-stat">
+                                <div class="stat-icon">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-value counter">72</div>
+                                    <div class="stat-label">Punteggio Medio</div>
+                                </div>
+                            </div>
                         </div>
                         <div class="dashboard-chart">
-                            <div class="chart-bars">
-                                <div class="chart-bar" style="height: 60%;"><span>L</span></div>
-                                <div class="chart-bar" style="height: 80%;"><span>M</span></div>
-                                <div class="chart-bar" style="height: 45%;"><span>M</span></div>
-                                <div class="chart-bar" style="height: 65%;"><span>G</span></div>
-                                <div class="chart-bar" style="height: 75%;"><span>V</span></div>
+                            <div class="chart-header">
+                                <h5>Attività Settimanale</h5>
                             </div>
-                            <div class="chart-label">Attività Settimanale</div>
+                            <div class="chart-body">
+                                <div class="chart-bars">
+                                    <div class="chart-bar" style="height: 60%;" data-day="Lun"></div>
+                                    <div class="chart-bar" style="height: 80%;" data-day="Mar"></div>
+                                    <div class="chart-bar" style="height: 45%;" data-day="Mer"></div>
+                                    <div class="chart-bar" style="height: 65%;" data-day="Gio"></div>
+                                    <div class="chart-bar" style="height: 75%;" data-day="Ven"></div>
+                                </div>
+                                <div class="chart-labels">
+                                    <div class="chart-label">L</div>
+                                    <div class="chart-label">M</div>
+                                    <div class="chart-label">M</div>
+                                    <div class="chart-label">G</div>
+                                    <div class="chart-label">V</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -359,9 +510,9 @@
 <!-- Call to Action -->
 @if (!User.Identity?.IsAuthenticated ?? true)
 {
-    <section class="cta-section py-5 text-center text-white">
+    <section class="cta-section py-5">
         <div class="container">
-            <div class="cta-content">
+            <div class="cta-content text-center" data-aos="fade-up">
                 <h2 class="mb-4">Pronto ad Esplorare il Mondo?</h2>
                 <p class="lead mb-4">Unisciti a Geography4Geek oggi e inizia il tuo viaggio di scoperta geografica.</p>
                 <div class="cta-buttons">
@@ -378,12 +529,12 @@
 }
 else
 {
-    <section class="logged-cta-section py-5 text-center">
+    <section class="logged-cta-section py-5">
         <div class="container">
-            <div class="cta-content">
+            <div class="cta-content text-center" data-aos="fade-up">
                 <h2 class="mb-4">Inizia a Esplorare!</h2>
                 <p class="lead mb-4">Sei pronto per scoprire il mondo e testare le tue conoscenze geografiche?</p>
-                <a href="/Globe/Index" class="btn btn-primary btn-lg px-5 shadow-sm">
+                <a href="/Globe/Index" class="btn btn-primary btn-lg px-5 shadow">
                     <i class="fas fa-globe-americas me-2"></i>Vai al Globo 3D
                 </a>
             </div>
@@ -392,565 +543,1255 @@ else
 }
 
 @section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    
     <style>
-        /* Stili generali */
-        body {
-            color: #333;
+        /* Global Styles */
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2ecc71;
+            --secondary-dark: #27ae60;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light-bg: #f8f9fa;
+            --text-dark: #2c3e50;
+            --text-muted: #7f8c8d;
+            --card-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            --hover-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
         }
-
+        
         section {
             position: relative;
             overflow: hidden;
         }
-
-        h2 {
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: #2c3e50;
+        
+        section:nth-child(even) {
+            background-color: var(--light-bg);
         }
-
+        
+        /* Section Headers */
+        .section-header {
+            margin-bottom: 3rem;
+        }
+        
+        .section-subtitle {
+            display: inline-block;
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--primary);
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+        
+        .section-divider {
+            height: 4px;
+            width: 60px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            margin: 0 auto;
+            border-radius: 4px;
+        }
+        
+        /* Text Gradient */
+        .text-gradient {
+            background: linear-gradient(to right, var(--primary), #4a69bd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* Buttons */
+        .btn {
+            border-radius: 8px;
+            padding: 0.6rem 1.5rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), #4a69bd);
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(to right, #2980b9, #3a539b);
+            box-shadow: 0 5px 15px rgba(41, 128, 185, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(to right, var(--secondary), #1abc9c);
+            border: none;
+        }
+        
+        .btn-success:hover {
+            background: linear-gradient(to right, #27ae60, #16a085);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(41, 128, 185, 0.3);
+        }
+        
         /* Hero Section */
         .hero-section {
-            background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 4rem 0;
+            background: radial-gradient(ellipse at top left, rgba(52, 152, 219, 0.05) 0%, rgba(255, 255, 255, 0) 70%), 
+                        radial-gradient(ellipse at bottom right, rgba(46, 204, 113, 0.05) 0%, rgba(255, 255, 255, 0) 70%);
+            padding: 6rem 0 4rem;
             position: relative;
         }
-
-            .hero-section::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-image: radial-gradient(circle at 10% 20%, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0) 20%), radial-gradient(circle at 90% 80%, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0) 20%);
-                pointer-events: none;
-            }
-
-        /* Animazione Globo */
-        .globe-animation-container {
+        
+        .hero-section h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--text-dark);
+        }
+        
+        .hero-section .lead {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+        
+        /* Globe Animation */
+        .globe-container {
             position: relative;
-            width: 100%;
-            height: 300px;
+            height: 400px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-
-        .globe-illustration {
-            width: 180px;
-            height: 180px;
+        
+        .globe-wrapper {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+        
+        .globe {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 0 auto;
+        }
+        
+        .globe-sphere {
+            position: absolute;
+            width: 220px;
+            height: 220px;
             background: linear-gradient(145deg, #3498db, #2980b9);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 5rem;
-            box-shadow: 0 10px 25px rgba(41, 128, 185, 0.3);
-            animation: pulse 3s ease-in-out infinite;
+            font-size: 8rem;
+            box-shadow: 0 10px 30px rgba(41, 128, 185, 0.4),
+                        inset 0 -5px 15px rgba(0, 0, 0, 0.2),
+                        inset 0 5px 15px rgba(255, 255, 255, 0.2);
+            animation: rotate 20s linear infinite, pulse 4s ease-in-out infinite;
+            z-index: 2;
         }
-
-        .floating-item {
+        
+        .globe-ring {
             position: absolute;
-            color: #2980b9;
-            opacity: 0.9;
-            font-size: 1.5rem;
+            top: 10%;
+            left: -10%;
+            width: 280px;
+            height: 180px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            filter: drop-shadow(0 3px 5px rgba(0,0,0,0.1));
+            transform: rotateX(80deg) rotateY(10deg);
+            animation: rotateRing 15s linear infinite;
+            z-index: 1;
         }
-
-        .floating-pin1 {
-            top: 20%;
-            left: 35%;
-            animation: float 4s ease-in-out infinite;
+        
+        .globe-ring-2 {
+            top: 15%;
+            left: -20%;
+            width: 320px;
+            height: 160px;
+            border-color: rgba(255, 255, 255, 0.08);
+            animation-direction: reverse;
+            animation-duration: 20s;
+        }
+        
+        .floating-element {
+            position: absolute;
+            font-size: 2rem;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
+            z-index: 3;
+        }
+        
+        .marker-1 {
+            top: 40px;
+            right: 60px;
             color: #e74c3c;
+            animation: floatMarker 5s ease-in-out infinite;
         }
-
-        .floating-pin2 {
-            bottom: 25%;
-            right: 35%;
-            animation: float 5s ease-in-out infinite 1s;
+        
+        .marker-2 {
+            bottom: 50px;
+            left: 40px;
             color: #f39c12;
+            animation: floatMarker 5s ease-in-out infinite 1s;
         }
-
-        .floating-quiz {
-            top: 40%;
-            right: 30%;
-            animation: float 3.5s ease-in-out infinite 0.5s;
-            color: #16a085;
+        
+        .marker-3 {
+            top: 130px;
+            right: 30px;
+            color: #1abc9c;
+            animation: floatMarker 5s ease-in-out infinite 2s;
         }
-
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @@keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @@keyframes rotateRing {
+            from { transform: rotateX(80deg) rotateY(10deg) rotate(0deg); }
+            to { transform: rotateX(80deg) rotateY(10deg) rotate(360deg); }
+        }
+        
+        @@keyframes floatMarker {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.1); }
+        }
+        
         @@keyframes pulse {
-            0%, 100%
-
-        {
-            transform: scale(1);
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
-
-        50% {
-            transform: scale(1.05);
+        
+        .fade-in-up {
+            animation: fadeInUp 1s both;
         }
-
+        
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-
-        @@keyframes float {
-            0%, 100%
-
-        {
-            transform: translateY(0) rotate(0deg);
+        
+        /* Stats Section */
+        .stats-section {
+            background-color: white;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.03);
+            position: relative;
+            z-index: 10;
         }
-
-        50% {
-            transform: translateY(-15px) rotate(5deg);
+        
+        .stat-item {
+            padding: 2rem 1rem;
+            position: relative;
         }
-
+        
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 20%;
+            right: 0;
+            height: 60%;
+            width: 1px;
+            background-color: rgba(0, 0, 0, 0.1);
         }
-
-        /* Feature Cards */
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+        
+        .counter {
+            display: inline-block;
+        }
+        
+        /* Features Section */
+        .features-section {
+            padding: 5rem 0;
+        }
+        
         .feature-card {
             background-color: white;
-            border-radius: 8px;
-            padding: 2rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: var(--border-radius);
+            padding: 2.5rem 2rem;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            height: 100%;
             text-align: center;
         }
-
-            .feature-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
-            }
-
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .feature-icon-wrapper {
+            margin-bottom: 1.5rem;
+        }
+        
         .feature-icon {
-            margin: 0 auto 1.5rem;
             width: 80px;
             height: 80px;
-            background: linear-gradient(145deg, #f1f9ff, #e3f2fd);
             border-radius: 50%;
+            background: linear-gradient(145deg, #f8f9fa, #ffffff);
+            box-shadow: 8px 8px 16px #e6e6e6, -8px -8px 16px #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2rem;
-            color: #2196f3;
+            color: var(--primary);
+            margin: 0 auto;
+            transition: var(--transition);
         }
-
-        /* Country Cards */
+        
+        .feature-card:hover .feature-icon {
+            color: white;
+            background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 10px 20px rgba(41, 128, 185, 0.3);
+        }
+        
+        .feature-card h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        /* Countries Section */
+        .countries-section {
+            padding: 5rem 0;
+        }
+        
         .country-card {
             background-color: white;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             overflow: hidden;
-            transition: transform 0.3s ease;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            height: 100%;
         }
-
-            .country-card:hover {
-                transform: translateY(-5px);
-            }
-
-        .country-icon {
-            height: 150px;
+        
+        .country-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .country-image {
+            height: 180px;
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
-            color: white;
+            overflow: hidden;
         }
-
+        
         .europe-bg {
             background: linear-gradient(145deg, #3f51b5, #3949ab);
         }
-
+        
         .asia-bg {
             background: linear-gradient(145deg, #ff9800, #f57c00);
         }
-
+        
         .americas-bg {
             background: linear-gradient(145deg, #4caf50, #43a047);
         }
-
-        .country-info {
-            padding: 1.5rem;
-            position: relative;
+        
+        .country-icon {
+            font-size: 5rem;
+            color: rgba(255, 255, 255, 0.3);
+            margin-bottom: 1rem;
+            transition: var(--transition);
         }
-
-        .country-flag-placeholder {
+        
+        .country-card:hover .country-icon {
+            transform: scale(1.2) rotate(10deg);
+        }
+        
+        .country-flag {
             position: absolute;
             top: -20px;
-            left: 15px;
-            width: 40px;
-            height: 28px;
-            background-color: #e9ecef;
-            border: 2px solid white;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.8rem;
-            color: #6c757d;
+            right: 20px;
+            width: 60px;
+            height: 40px;
+            border: 4px solid white;
+            border-radius: 8px;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: var(--transition);
         }
-
+        
+        .country-card:hover .country-flag {
+            transform: translateY(5px) scale(1.1);
+        }
+        
+        .country-info {
+            padding: 1.5rem;
+        }
+        
+        .country-info h4 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text-dark);
+        }
+        
+        .country-info p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
         .country-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 10px;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
         }
-
-        /* Process Timeline */
-        .process-timeline {
+        
+        .badge {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--primary);
+            border-radius: 20px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .country-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .btn-explore {
+            color: var(--primary);
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: var(--transition);
+        }
+        
+        .btn-explore:hover {
+            color: var(--primary-dark);
+            transform: translateX(5px);
+        }
+        
+        /* Timeline Section */
+        .timeline {
             position: relative;
+            padding: 1rem 0;
             max-width: 800px;
             margin: 0 auto;
         }
-
-            .process-timeline::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                left: 40px;
-                width: 2px;
-                background-color: #e9ecef;
-            }
-
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50px;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            border-radius: 4px;
+        }
+        
         .timeline-item {
             position: relative;
+            padding-left: 70px;
+            margin-bottom: 2.5rem;
+        }
+        
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: 0;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 0 0 4px var(--primary), 0 5px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        
+        .timeline-dot span {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .timeline-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
             display: flex;
             gap: 1.5rem;
-            margin-bottom: 2rem;
-            padding-left: 1rem;
+            transition: var(--transition);
         }
-
-        .timeline-number {
-            width: 60px;
-            height: 60px;
-            background-color: #007bff;
-            color: white;
+        
+        .timeline-item:hover .timeline-content {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .timeline-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(145deg, var(--primary), var(--primary-dark));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            z-index: 1;
-            box-shadow: 0 4px 8px rgba(0,123,255,0.2);
-            margin-right: 10px;
+            color: white;
+            font-size: 1.3rem;
+            flex-shrink: 0;
         }
-
-        .timeline-content {
-            flex: 1;
+        
+        .timeline-text {
+            flex-grow: 1;
+        }
+        
+        .timeline-text h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+        
+        .timeline-text p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+        
+        /* Quiz Section */
+        .quiz-preview-section {
+            padding: 5rem 0;
             background-color: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
-
-        /* Quiz Preview */
-        .quiz-preview {
-            background-color: white;
-        }
-
+        
         .quiz-features {
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
+            margin-top: 2rem;
         }
-
+        
         .quiz-feature {
             display: flex;
             align-items: flex-start;
             gap: 1rem;
         }
-
-            .quiz-feature i {
-                font-size: 1.5rem;
-                margin-top: 0.25rem;
-            }
-
-        .quiz-card {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .quiz-header {
-            background-color: #007bff;
-            color: white;
-            padding: 1rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .quiz-title {
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-
-        .quiz-badge {
-            background-color: #0056b3;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-        }
-
-        .quiz-body {
-            padding: 1.5rem;
-        }
-
-        .quiz-question {
-            margin-bottom: 1.5rem;
-            display: flex;
-            gap: 1rem;
-        }
-
-        .question-number {
-            width: 30px;
-            height: 30px;
-            background-color: #007bff;
-            color: white;
+        
+        .quiz-feature-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(145deg, #f8f9fa, #ffffff);
+            box-shadow: 5px 5px 10px #e6e6e6, -5px -5px 10px #ffffff;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.3rem;
             flex-shrink: 0;
         }
-
-        .quiz-options {
+        
+        .quiz-feature-text h5 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: var(--text-dark);
+        }
+        
+        .quiz-feature-text p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 0;
+        }
+        
+        .quiz-interface-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        
+        .quiz-interface-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .quiz-interface-header {
+            background: linear-gradient(to right, var(--primary), #4a69bd);
+            padding: 1.2rem 1.5rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .country-flag-small {
+            width: 30px;
+            height: 20px;
+            background-size: cover;
+            margin-right: 10px;
+            border-radius: 4px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .quiz-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .quiz-badge {
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .quiz-interface-body {
+            padding: 1.5rem;
+        }
+        
+        .quiz-question {
+            display: flex;
+            gap: 1rem;
             margin-bottom: 1.5rem;
+            align-items: flex-start;
         }
-
+        
+        .question-number {
+            width: 36px;
+            height: 36px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .quiz-question p {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0;
+            flex-grow: 1;
+        }
+        
+        .quiz-options {
+            margin-bottom: 2rem;
+        }
+        
         .option {
-            padding: 0.5rem 1rem;
-            border: 1px solid #e9ecef;
-            border-radius: 5px;
-            margin-bottom: 0.5rem;
+            background-color: white;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            margin-bottom: 0.8rem;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: var(--transition);
+            position: relative;
         }
-
-            .option:hover {
-                background-color: #f8f9fa;
-            }
-
-            .option.correct {
-                border-color: #28a745;
-                background-color: rgba(40, 167, 69, 0.1);
-            }
-
+        
+        .option:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+            border-color: var(--primary);
+        }
+        
+        .option.correct {
+            background-color: rgba(46, 204, 113, 0.1);
+            border-color: var(--secondary);
+        }
+        
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .correct-indicator {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary);
+            font-size: 1.2rem;
+        }
+        
         .quiz-navigation {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
+        
         .quiz-progress {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 5px;
-            flex: 1;
-            margin: 0 1rem;
+            width: 40%;
         }
-
+        
         .progress {
             width: 100%;
             height: 8px;
+            background-color: rgba(0,0,0,0.05);
+            border-radius: 10px;
+            overflow: hidden;
         }
-
-        /* Teacher Section */
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), #4a69bd);
+            border-radius: 10px;
+        }
+        
+        /* Teachers Section */
         .teachers-section {
-            background-color: #f8f9fa;
+            padding: 5rem 0;
         }
-
+        
         .teacher-features {
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
+            margin-top: 2rem;
         }
-
+        
         .teacher-feature {
             display: flex;
             align-items: flex-start;
             gap: 1rem;
         }
-
-            .teacher-feature i {
-                font-size: 1.5rem;
-                margin-top: 0.25rem;
-            }
-
-        .dashboard-preview {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .dashboard-header {
-            background-color: #28a745;
-            color: white;
-            padding: 1rem 1.5rem;
+        
+        .teacher-feature-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(145deg, #f8f9fa, #ffffff);
+            box-shadow: 5px 5px 10px #e6e6e6, -5px -5px 10px #ffffff;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            justify-content: center;
+            color: var(--secondary);
+            font-size: 1.3rem;
+            flex-shrink: 0;
         }
-
+        
+        .dashboard-preview {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        
+        .dashboard-preview:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .dashboard-header {
+            background: linear-gradient(to right, var(--secondary), #1abc9c);
+            padding: 1.2rem 1.5rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
         .dashboard-body {
             padding: 1.5rem;
         }
-
+        
+        .dashboard-stats {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        
         .dashboard-stat {
-            margin-bottom: 1rem;
-            text-align: center;
-            display: inline-block;
-            width: 33%;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            width: 30%;
+            transition: var(--transition);
         }
-
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #2c3e50;
+        
+        .dashboard-stat:hover {
+            background-color: #eef2f7;
+            transform: translateY(-3px);
         }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: #6c757d;
+        
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary);
+            font-size: 1.2rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-
+        
+        .stat-info {
+            flex-grow: 1;
+        }
+        
         .dashboard-chart {
-            margin-top: 1.5rem;
+            background-color: white;
+            border-radius: 8px;
+            border: 1px solid rgba(0,0,0,0.05);
+            overflow: hidden;
         }
-
+        
+        .chart-header {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .chart-header h5 {
+            margin-bottom: 0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .chart-body {
+            padding: 1.5rem;
+            height: 200px;
+            position: relative;
+        }
+        
         .chart-bars {
             display: flex;
             justify-content: space-between;
-            height: 100px;
+            align-items: flex-end;
+            height: 150px;
         }
-
+        
         .chart-bar {
             width: 30px;
-            background-color: #28a745;
-            border-radius: 4px 4px 0 0;
+            background: linear-gradient(to top, var(--secondary), #1abc9c);
+            border-radius: 6px 6px 0 0;
+            transition: var(--transition);
             position: relative;
+        }
+        
+        .chart-bar:hover {
+            transform: scaleY(1.05);
+            cursor: pointer;
+        }
+        
+        .chart-bar:hover::after {
+            content: attr(data-day);
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--dark);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+        
+        .chart-labels {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            margin-top: 10px;
         }
-
-            .chart-bar span {
-                position: absolute;
-                bottom: -25px;
-                font-size: 0.8rem;
-                color: #6c757d;
-            }
-
+        
         .chart-label {
+            width: 30px;
             text-align: center;
-            margin-top: 30px;
-            color: #2c3e50;
-            font-weight: 500;
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
-
+        
         /* CTA Sections */
         .cta-section {
-            background: linear-gradient(145deg, #007bff, #0056b3);
-            padding: 4rem 0;
+            background: linear-gradient(135deg, var(--primary), #4a69bd);
+            padding: 5rem 0;
+            color: white;
+            position: relative;
+            overflow: hidden;
         }
-
-        .logged-cta-section {
-            background-color: #f8f9fa;
-            padding: 4rem 0;
+        
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255, 255, 255, 0.05)" d="M0,160L48,138.7C96,117,192,75,288,69.3C384,64,480,96,576,128C672,160,768,192,864,176C960,160,1056,96,1152,74.7C1248,53,1344,75,1392,85.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom center/cover;
+            opacity: 0.5;
+            z-index: 0;
         }
-
+        
         .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .cta-section .lead {
+            font-size: 1.2rem;
             max-width: 700px;
             margin: 0 auto;
+            opacity: 0.9;
         }
-
-        /* Responsive Adjustments */
+        
+        .logged-cta-section {
+            background: linear-gradient(135deg, #f9f9f9, #f1f1f1);
+            padding: 5rem 0;
+        }
+        
+        /* Responsive Styles */
         @@media (max-width: 991.98px) {
-            .timeline-content
-
-        {
-            padding: 1rem;
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .hero-section h1 {
+                font-size: 2.8rem;
+            }
+            
+            .globe-container {
+                height: 350px;
+            }
+            
+            .dashboard-stat {
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+            
+            .stat-item::after {
+                display: none;
+            }
         }
-
-        .dashboard-preview {
-            margin-top: 2rem;
-        }
-
-        }
-
+        
         @@media (max-width: 767.98px) {
-            .process-timeline::before
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .hero-section h1 {
+                font-size: 2.3rem;
+            }
+            
+            .hero-section {
+                padding: 4rem 0 2rem;
+            }
+            
+            .globe-container {
+                height: 300px;
+            }
+            
+            .globe-wrapper {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .globe-sphere {
+                width: 180px;
+                height: 180px;
+                font-size: 6rem;
+            }
+            
+            .globe-ring {
+                width: 230px;
+                height: 140px;
+            }
+            
+            .globe-ring-2 {
+                width: 270px;
+                height: 130px;
+            }
+            
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-content {
+                flex-direction: column;
+                padding: 1.2rem;
+            }
+            
+            .timeline-icon {
+                margin-bottom: 1rem;
+            }
 
-        {
-            left: 30px;
+        .quiz-interface-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
         }
 
-        .timeline-number {
-            width: 50px;
-            height: 50px;
-            font-size: 1.25rem;
+        .quiz-badge {
+            align-self: flex-start;
         }
 
-        .dashboard-stat {
-            width: 100%;
-            margin-bottom: 1.5rem;
+        .dashboard-chart {
+            height: auto;
         }
 
-        .chart-bars {
-            height: 80px;
+        .chart-body {
+            height: 170px;
         }
 
         .chart-bar {
-            width: 20px;
+            width: 24px;
         }
+
+        .chart-label {
+            width: 24px;
+            font-size: 0.8rem;
+        }
+
+        .option {
+            padding: 0.6rem 0.8rem;
+        }
+
+        .correct-indicator {
+            right: 0.8rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        }
+
+        @@media (max-width: 575.98px) {
+            .section-title
+
+        {
+            font-size: 1.6rem;
+        }
+
+        .hero-section h1 {
+            font-size: 2rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+        }
+
+        .timeline-dot {
+            width: 40px;
+            height: 40px;
+        }
+
+            .timeline-dot span {
+                font-size: 1.2rem;
+            }
+
+        .timeline-item {
+            padding-left: 60px;
+        }
+
+        .timeline::before {
+            left: 20px;
+        }
+
+        .quiz-question {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .quiz-navigation {
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .quiz-progress {
+            order: -1;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+            .cta-buttons .btn {
+                width: 100%;
+            }
 
         }
     </style>
 }
 
 @section Scripts {
-    <script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/countup.js@2.0.7/dist/countUp.min.js"></script>
 
-        // Script per caricare le bandiere in modo sicuro
+    <script>
+        // Initialize AOS (Animate on Scroll)
         document.addEventListener('DOMContentLoaded', function() {
-            // Funzione per caricare una bandiera con gestione degli errori
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true,
+                mirror: false
+            });
+
+            // Initialize CountUp.js for number animation
+            const counterElements = document.querySelectorAll('.counter');
+            counterElements.forEach(function(el) {
+                const value = parseInt(el.textContent, 10);
+                const countUp = new CountUp(el, value, {
+                    duration: 2.5,
+                    separator: ',',
+                    useEasing: true
+                });
+
+                if (!countUp.error) {
+                    countUp.start();
+                } else {
+                    console.error(countUp.error);
+                }
+            });
+
+            // Load country flags
             function loadFlag(countryCode, elementId) {
                 if (!countryCode || !elementId) return;
 
-                const flagUrl = `https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`;
+                const flagUrl = `https://flagcdn.com/w80/${countryCode.toLowerCase()}.png`;
                 const img = new Image();
 
                 img.onload = function() {
-                    // La bandiera è stata caricata con successo
                     const flagElement = document.getElementById(elementId);
                     if (flagElement) {
-                        flagElement.innerHTML = '';
-                        flagElement.style.background = `url(${flagUrl}) center/cover no-repeat`;
-                        flagElement.style.color = 'transparent';
+                        flagElement.style.backgroundImage = `url(${flagUrl})`;
                     }
                 };
 
                 img.onerror = function() {
-                    // Errore nel caricamento, lascia il fallback con il codice paese
                     console.log(`Impossibile caricare la bandiera per ${countryCode}`);
                 };
 
                 img.src = flagUrl;
             }
 
-            // Carica le bandiere per ogni paese
+            // Load flags for countries
             loadFlag('it', 'italy-flag');
             loadFlag('jp', 'japan-flag');
             loadFlag('br', 'brazil-flag');
+
+            // Add hover effects to chart bars
+            const chartBars = document.querySelectorAll('.chart-bar');
+            chartBars.forEach(bar => {
+                bar.addEventListener('mouseenter', function() {
+                    this.style.opacity = '0.9';
+                });
+
+                bar.addEventListener('mouseleave', function() {
+                    this.style.opacity = '1';
+                });
+            });
+
+            // Add smooth scroll for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
         });
     </script>
-
-    @if (User.Identity?.IsAuthenticated ?? false)
-    {
-        <!-- Three.js solo per utenti autenticati - non necessario per ora -->
-    }
 }

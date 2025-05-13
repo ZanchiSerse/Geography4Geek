@@ -158,29 +158,3 @@
         </div>
     </div>
 </div>
-<!-- Aggiungi questa sezione dopo le altre statistiche -->
-<div class="card mb-4">
-    <div class="card-header bg-light">
-        <h5 class="mb-0">Debug Tentativi Quiz</h5>
-    </div>
-    <div class="card-body">
-        <p><strong>Totale tentativi in database:</strong> @Model.TotalAttempts</p>
-        <p><strong>Utente corrente:</strong> @Model.CurrentUser</p>
-        <p><strong>Data attuale:</strong> @Model.CurrentDate</p>
-
-        <div class="alert alert-info">
-            <p><strong>Tentativi caricati:</strong> @Model.RecentAttempts.Count</p>
-            <ul>
-                @foreach (var attempt in Model.RecentAttempts)
-                {
-                    <li>
-                        @attempt.Id: @attempt.CountryName (@attempt.Difficulty) -
-                        Utente: @(attempt.User?.UserName ?? "N/A") (@attempt.UserId) -
-                        Punteggio: @attempt.Score/@attempt.TotalQuestions -
-                        Completato: @(attempt.CompletedAt?.ToString("yyyy-MM-dd HH:mm:ss") ?? "N/A")
-                    </li>
-                }
-            </ul>
-        </div>
-    </div>
-</div>
