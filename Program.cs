@@ -94,7 +94,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 app.MapControllers();
-app.UseMiddleware<Geography4Geek_1.Middleware.RoleSyncMiddleware>();
 
 // Middleware per ridirezionare a login se non autenticato
 app.Use(async (context, next) =>
